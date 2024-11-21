@@ -1,0 +1,27 @@
+{
+  "name": "projetnotes",
+  "version": "1.0.0",
+  "description": "Projet d'application de notes (FdN)",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "build:css": "tailwindcss -i ./public/css/input.css -o ./public/css/output.css"
+  },
+  "keywords": [
+    "notes",
+    "note",
+    "projet"
+  ],
+  "author": "Nina Wachter",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.15"
+  }
+}

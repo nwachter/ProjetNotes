@@ -1,0 +1,47 @@
+
+# Ignore folder xxx
+/node_modules/
+
+# Files
+config.env
+
+# Ignore logs and coverage folder
+/logs
+/coverage
+
+# Ignore OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ignore tmp and cache folders
+/tmp
+/.cache
+/.nyc_output
+/.yarn-integrity
+.pnpm-debug.log
+.yarn-integrity
+.yarn-unplugged
+.yarn-workspaces.log
+
+# Ignore editor settings and temp files
+*.sublime-project
+*.sublime-workspace
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+
+# Ignore build directories
+/build
+/dist
+/node_modules/
+/publice
+/target
+/test-results
