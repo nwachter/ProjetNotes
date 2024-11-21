@@ -1,0 +1,7 @@
+{
+    "id": 1,    
+    "title":"Note 1",
+    "content": "Contenu de la note 1",
+    "tags": ["Tag 1, Tag 2"],
+    "createdAt": "2023-06-15T13:00:00.000Z"
+}

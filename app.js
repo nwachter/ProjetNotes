@@ -1,4 +1,5 @@
 require('dotenv').config({ path: 'config.env' });
+const path = require('path');
 const http = require('http');
 
 const hostname = 'localhost';
@@ -11,6 +12,8 @@ const app = express();
 
 
 app.use('/', router);
+app.set('views', path.join(__dirname, 'views')); // Ensure this points to the correct folder
+
 app.use(express.static('public'));
 app.set("view engine", "ejs");
 
