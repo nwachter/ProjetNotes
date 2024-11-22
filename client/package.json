@@ -1,0 +1,22 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "Côté client du projet d'application Notes",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "projet",
+    "notes",
+    "node.js",
+    "node",
+    "express"
+  ],
+  "author": "Nina Wachter",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nwachter/ProjetNotes/issues"
+  },
+  "homepage": "https://github.com/nwachter/ProjetNotes#readme"
+}
