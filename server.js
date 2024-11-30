@@ -31,6 +31,7 @@ app.use('/api/v1/notes', notesRouter);
 //     // Serves the React build from Express ; When users visit non-API routes, the server will send the React app's index.html.
 //     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 // });
+// Serve static files only in production
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
