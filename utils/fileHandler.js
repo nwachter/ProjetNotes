@@ -1,13 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
-//Path to JSON file
-const DATA_FILE = path.join(__dirname, '../notes.json');
-
-console.log(DATA_FILE);
 
 // READ DATA FROM THE JSON FILE
-const readData = () => {
+const readData = (fileName) => {
+    const DATA_FILE = path.join(__dirname, `../data/${fileName}.json`);
     //comme lire un fchier prend du temps, utiliser try catch
     //soit async await, soit readFileSync
     try {
@@ -22,7 +19,8 @@ const readData = () => {
 }
 
 //WRITE DATA IN THE JSON FILE
-const writeData = (data) => {
+const writeData = (data, fileName) => {
+    const DATA_FILE = path.join(__dirname, `../data/${fileName}.json`);
     try {
         fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2)); //data, replacer, spaces
     }

@@ -1,9 +1,12 @@
 
 # Ignore folder xxx
 /node_modules/
+/client/node_modules
+/client/build
 
 # Files
 config.env
+/client/.env/
 
 # Ignore logs and coverage folder
 /logs

@@ -1,0 +1,143 @@
+[
+    {
+      "id": 1,
+      "title": "Meeting Notes",
+      "content": "Discussed project milestones and deadlines for Q1.",
+      "createdAt": "2024-11-01T10:15:00Z",
+      "tags": ["work", "meeting", "Q1"]
+    },
+    {
+      "id": 2,
+      "title": "Shopping List",
+      "content": "Milk, Bread, Eggs, Coffee, Chicken, Vegetables.",
+      "createdAt": "2024-11-03T08:45:00Z",
+      "tags": ["personal", "shopping"]
+    },
+    {
+      "id": 3,
+      "title": "Workout Plan",
+      "content": "Monday: Chest, Tuesday: Back, Wednesday: Cardio.",
+      "createdAt": "2024-11-05T14:00:00Z",
+      "tags": ["fitness", "health"]
+    },
+    {
+      "id": 4,
+      "title": "Recipe Ideas",
+      "content": "Pasta with pesto, grilled salmon, vegetable curry.",
+      "createdAt": "2024-11-07T12:30:00Z",
+      "tags": ["cooking", "recipes"]
+    },
+    {
+      "id": 5,
+      "title": "Vacation Ideas",
+      "content": "Visit Japan, explore Italy, road trip across the USA.",
+      "createdAt": "2024-11-10T16:00:00Z",
+      "tags": ["travel", "ideas"]
+    },
+    {
+      "id": 6,
+      "title": "Daily Journal",
+      "content": "Today was productive. Finished work early and went for a run.",
+      "createdAt": "2024-11-12T20:00:00Z",
+      "tags": ["journal", "personal"]
+    },
+    {
+      "id": 7,
+      "title": "Event Planning",
+      "content": "Book venue, send invites, plan menu for the party.",
+      "createdAt": "2024-11-15T09:00:00Z",
+      "tags": ["event", "planning"]
+    },
+    {
+      "id": 8,
+      "title": "Tech To-Do List",
+      "content": "Fix server issues, update website, backup database.",
+      "createdAt": "2024-11-17T14:45:00Z",
+      "tags": ["work", "tech"]
+    },
+    {
+      "id": 9,
+      "title": "Reading List",
+      "content": "Start 'Dune', finish 'Atomic Habits', buy 'Sapiens'.",
+      "createdAt": "2024-11-18T18:30:00Z",
+      "tags": ["books", "personal"]
+    },
+    {
+      "id": 10,
+      "title": "Ideas for Side Project",
+      "content": "Create a budget tracker app, develop a habit tracker.",
+      "createdAt": "2024-11-20T22:00:00Z",
+      "tags": ["tech", "ideas"]
+    },
+    {
+      "id": 11,
+      "title": "Weekend Goals",
+      "content": "Clean the house, finish reading a book, cook a new recipe.",
+      "createdAt": "2024-11-22T07:00:00Z",
+      "tags": ["goals", "personal"]
+    },
+    {
+      "id": 12,
+      "title": "Movie Recommendations",
+      "content": "Watch 'Inception', 'The Matrix', and 'The Grand Budapest Hotel'.",
+      "createdAt": "2024-11-23T15:20:00Z",
+      "tags": ["movies", "entertainment"]
+    },
+    {
+      "id": 13,
+      "title": "Work Goals",
+      "content": "Finish coding feature X, review PRs, attend weekly sync.",
+      "createdAt": "2024-11-24T10:10:00Z",
+      "tags": ["work", "goals"]
+    },
+    {
+      "id": 14,
+      "title": "Fitness Log",
+      "content": "Ran 5km in 30 minutes, did a 20-minute yoga session.",
+      "createdAt": "2024-11-25T19:00:00Z",
+      "tags": ["fitness", "health"]
+    },
+    {
+      "id": 15,
+      "title": "Gardening Tips",
+      "content": "Water plants early in the morning, use compost for soil.",
+      "createdAt": "2024-11-26T08:30:00Z",
+      "tags": ["gardening", "tips"]
+    },
+    {
+      "id": 16,
+      "title": "Programming Notes",
+      "content": "Remember to use async/await for handling promises.",
+      "createdAt": "2024-11-27T12:45:00Z",
+      "tags": ["tech", "programming"]
+    },
+    {
+      "id": 17,
+      "title": "Goals for December",
+      "content": "Start learning a new skill, finish the current project.",
+      "createdAt": "2024-11-28T21:00:00Z",
+      "tags": ["goals", "planning"]
+    },
+    {
+      "id": 18,
+      "title": "Gift Ideas",
+      "content": "Books for mom, headphones for dad, a board game for friends.",
+      "createdAt": "2024-11-29T13:20:00Z",
+      "tags": ["gifts", "planning"]
+    },
+    {
+      "id": 19,
+      "title": "Conference Notes",
+      "content": "Great talk on AI advancements, need to follow up with speaker.",
+      "createdAt": "2024-11-30T11:15:00Z",
+      "tags": ["work", "conference"]
+    },
+    {
+      "id": 20,
+      "title": "Bucket List",
+      "content": "Learn to surf, skydive, visit the Great Wall of China.",
+      "createdAt": "2024-12-01T16:00:00Z",
+      "tags": ["personal", "adventure"]
+    }
+  ]
+  
