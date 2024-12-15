@@ -13,26 +13,15 @@ app.use(express.urlencoded({ extended: true }));
 
 //kkk
 
-//Cors - If the backend API and React frontend run on different ports during development.
-// CORS setup
-// app.use(cors({
-//     origin: 'http://localhost:3000',
-//     credentials: true
-// }));
-// app.use(cors());
+//Cors
+
+app.use(cors());
 
 //Routes
 const notesRouter = require('./routes/notesRoutes');
 app.use('/api/v1/notes', notesRouter);
 
 // Serve React static files
-// app.use(express.static(path.join(__dirname, 'client/build')));
-// app.get('*', (req, res) => {
-//     // Serves the React build from Express ; When users visit non-API routes, the server will send the React app's index.html.
-//     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-// });
-// Serve static files only in production
-
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.get('*', (req, res) => {

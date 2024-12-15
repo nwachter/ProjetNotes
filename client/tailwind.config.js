@@ -1,18 +1,15 @@
 module.exports = {
   content: [
-    "./assets//.js",
-    "./assets/**/*.js",
-    "./templates/**/*.html.twig",
-    "./assets/**/.vue",
-    "./public/**/*.ejs",
-    "./public/**/*.html",
     "./public/*.html",
     "./src/*.{js,jsx,ts,tsx}",
-    "./public/index.html",
-    "./src/features/*.{js,jsx,ts,tsx}",
-    "./src/features/**/*.{js,jsx,ts,tsx}",
-    "./src/components/*.{js,jsx,ts,tsx}",
-    "./src/components/**/*.{js,jsx,ts,tsx}",
+    // "./src/features/*.{js,jsx,ts,tsx}",
+    // "./src/features/**/*.{js,jsx,ts,tsx}",
+    // "./src/components/*.{js,jsx,ts,tsx}",
+    // "./src/components/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./src/**/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.css",
+    "./index.html"
     //     "./templates/bundles/**/*.html.twig",  
     // Ajoutez d'autres chemins selon vos fichiers
   ],
@@ -38,6 +35,7 @@ module.exports = {
         raleway: ['Raleway', 'sans-serif'],
         sourceSans: ['Source Sans Pro', 'sans-serif'],
         quicksand: ['Quicksand', 'sans-serif'],
+        reggaeOne: ['Reggae One', 'normal'],
       },
 
       colors: {

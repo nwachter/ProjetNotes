@@ -21,16 +21,16 @@ const getNoteById = (req, res) => {
 }
 
 //Create Note
-const createNote = (req, res) => {
-    const data = readData("notes");
-    const newNote = {
+const signupUser = (req, res) => {
+    const data = readData("users");
+    const newUser = {
         id: data.length > 0 ? data[data.length - 1].id + 1 : 1, //Auto increment ID
         //Test si il y a des objets => incrémenter de 1 SINON ajouter id 1
         ...req.body
 
     };
-    data.push(newNote);
-    writeData(data, "notes");
+    data.push(newUser);
+    writeData(data, "users");
     res.status(201).json(newNote);
 }
 
