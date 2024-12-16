@@ -103,5 +103,10 @@
     "id": 21,
     "username": "nina",
     "password": "$2b$10$NjXvF4jBLoWKlSUv4YNfOeEoC0NusoGyg5u06Bl891eMqpVZnMT5u"
+  },
+  {
+    "id": 22,
+    "username": "nwachter",
+    "password": "$2b$10$fZ74lhIagizpY7by5qg6s.Qd0M/uTPnQ/rJsYxfTswygaOkSvJu.a"
   }
 ]

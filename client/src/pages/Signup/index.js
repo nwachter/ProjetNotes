@@ -73,10 +73,10 @@ const SignupComponent = () => {
       {/* Left Section - Form */}
       <div className="flex-1 flex justify-center items-center border-stroke/10 border-[5px] bg-gradient-to-t bg-opacity-[13%] from-glass-100/[7%] from-[100%] via-[0%] via-glass-200/0 to-glass-300/[40%] to-[0%] rounded-md p-4 shadow-md relative overflow-hidden">
         <div className="p-8 rounded-lg relative max-w-md">
-          <img src={glassDonut.src} alt="Glass Donut" className="w-[174px] h-[81px] mb-6" />
-          <h2 className="text-4xl font-bold font-reggae-one text-center mb-6">Inscrivez-vous</h2>
-          <form className='flex flex-col gap-6'>
-            <div>
+          <img src={glassDonut} alt="Glass Donut" className="z-0 absolute top-2 left-2 right-2 h-72 w-72 mb-6" />
+          <h2 className="text-4xl font-bold font-reggae-one text-center my-6">Inscrivez-vous</h2>
+          <form className='flex flex-col gap-6' action='*' onSubmit={handleSubmit}>
+            <div className='z-1 relative'>
               <label htmlFor='username' className="block font-roboto mb-2">Pseudo</label>
               <input
                 type="text"
@@ -92,7 +92,7 @@ const SignupComponent = () => {
 
 
 
-            <div>
+            <div className='z-1 relative'>
               <label htmlFor='password' className="block font-roboto mb-2">Mot de passe</label>
               <input
                 type="password"
@@ -108,7 +108,6 @@ const SignupComponent = () => {
 
             <button
               type="submit"
-              onSubmit={handleSubmit}
               className="w-full py-3 bg-green-800 font-roboto text-white rounded hover:bg-green-700"
             >
               Inscription
