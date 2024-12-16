@@ -1,22 +1,107 @@
 [
-    { "id": 1, "username": "nwachter", "password": "a3f5d6c1b9e8f347bc9de674a2c3f00e" },
-    { "id": 2, "username": "user2", "password": "d4c9e7f1a2b3e857a1e4f098c2d6a379" },
-    { "id": 3, "username": "user3", "password": "e9a2b1f8c3d7e659f0a4d3b9e6a2f890" },
-    { "id": 4, "username": "user4", "password": "c7e1b4f6a2d9f358e9a0b3f8d2e6c790" },
-    { "id": 5, "username": "user5", "password": "f0a3e5b1c9d6a274e7c9f8a2b3d6e980" },
-    { "id": 6, "username": "user6", "password": "b9d8e4f1a3c7e629f5a0c2d6a3b9e780" },
-    { "id": 7, "username": "user7", "password": "d3a7e9b2f1c4a6d9e8f5a0c3b6d2e790" },
-    { "id": 8, "username": "user8", "password": "e1b3d7f9a2c5e4f6a9c0d2a3b8e7f090" },
-    { "id": 9, "username": "user9", "password": "f2c9b4a1e7d8a3f5e0c6d2a9e3f8b790" },
-    { "id": 10, "username": "user10", "password": "a4f7e2b3c9d6e5a9f8b0c3d2a6e9f080" },
-    { "id": 11, "username": "user11", "password": "c2e9f5a3d8b1f4a6d7c0a3e9b8f2d790" },
-    { "id": 12, "username": "user12", "password": "b7d3a9f1e6c5f2a4d9b0c2e8f3a7d680" },
-    { "id": 13, "username": "user13", "password": "e8a3b9d7f5c2a4f0d6a9e2b3c8f7d590" },
-    { "id": 14, "username": "user14", "password": "d2c8f4a7e5b9a3f6d0e9c2a3b7e8f190" },
-    { "id": 15, "username": "user15", "password": "a9f7c3b5e1d6a4e9f0c2a3b8d7f2e490" },
-    { "id": 16, "username": "user16", "password": "c3e8a7f1b6d9e4a2f0c2a9d3b5e7f680" },
-    { "id": 17, "username": "user17", "password": "b6d4a9f8c3e7f1a2d0c2a5e9b3f6d790" },
-    { "id": 18, "username": "user18", "password": "e3a9f7b6c1d5e8a2f0c9b3a6d7f2e490" },
-    { "id": 19, "username": "user19", "password": "d8c5f3a7e9b1a2f6d0c9a3e7b4f8d690" },
-    { "id": 20, "username": "user20", "password": "f1a9e3b6d7c4f5a8d0c2a3e9b7f6d280" }
-  ]
+  {
+    "id": 1,
+    "username": "user1",
+    "password": "a3f5d6c1b9e8f347bc9de674a2c3f00e"
+  },
+  {
+    "id": 2,
+    "username": "user2",
+    "password": "d4c9e7f1a2b3e857a1e4f098c2d6a379"
+  },
+  {
+    "id": 3,
+    "username": "user3",
+    "password": "e9a2b1f8c3d7e659f0a4d3b9e6a2f890"
+  },
+  {
+    "id": 4,
+    "username": "user4",
+    "password": "c7e1b4f6a2d9f358e9a0b3f8d2e6c790"
+  },
+  {
+    "id": 5,
+    "username": "user5",
+    "password": "f0a3e5b1c9d6a274e7c9f8a2b3d6e980"
+  },
+  {
+    "id": 6,
+    "username": "user6",
+    "password": "b9d8e4f1a3c7e629f5a0c2d6a3b9e780"
+  },
+  {
+    "id": 7,
+    "username": "user7",
+    "password": "d3a7e9b2f1c4a6d9e8f5a0c3b6d2e790"
+  },
+  {
+    "id": 8,
+    "username": "user8",
+    "password": "e1b3d7f9a2c5e4f6a9c0d2a3b8e7f090"
+  },
+  {
+    "id": 9,
+    "username": "user9",
+    "password": "f2c9b4a1e7d8a3f5e0c6d2a9e3f8b790"
+  },
+  {
+    "id": 10,
+    "username": "user10",
+    "password": "a4f7e2b3c9d6e5a9f8b0c3d2a6e9f080"
+  },
+  {
+    "id": 11,
+    "username": "user11",
+    "password": "c2e9f5a3d8b1f4a6d7c0a3e9b8f2d790"
+  },
+  {
+    "id": 12,
+    "username": "user12",
+    "password": "b7d3a9f1e6c5f2a4d9b0c2e8f3a7d680"
+  },
+  {
+    "id": 13,
+    "username": "user13",
+    "password": "e8a3b9d7f5c2a4f0d6a9e2b3c8f7d590"
+  },
+  {
+    "id": 14,
+    "username": "user14",
+    "password": "d2c8f4a7e5b9a3f6d0e9c2a3b7e8f190"
+  },
+  {
+    "id": 15,
+    "username": "user15",
+    "password": "a9f7c3b5e1d6a4e9f0c2a3b8d7f2e490"
+  },
+  {
+    "id": 16,
+    "username": "user16",
+    "password": "c3e8a7f1b6d9e4a2f0c2a9d3b5e7f680"
+  },
+  {
+    "id": 17,
+    "username": "user17",
+    "password": "b6d4a9f8c3e7f1a2d0c2a5e9b3f6d790"
+  },
+  {
+    "id": 18,
+    "username": "user18",
+    "password": "e3a9f7b6c1d5e8a2f0c9b3a6d7f2e490"
+  },
+  {
+    "id": 19,
+    "username": "user19",
+    "password": "d8c5f3a7e9b1a2f6d0c9a3e7b4f8d690"
+  },
+  {
+    "id": 20,
+    "username": "user20",
+    "password": "f1a9e3b6d7c4f5a8d0c2a3e9b7f6d280"
+  },
+  {
+    "id": 21,
+    "username": "nina",
+    "password": "$2b$10$NjXvF4jBLoWKlSUv4YNfOeEoC0NusoGyg5u06Bl891eMqpVZnMT5u"
+  }
+]

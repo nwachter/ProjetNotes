@@ -18,7 +18,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 //Routes
+const authRouter = require('./routes/authRoutes')
 const notesRouter = require('./routes/notesRoutes');
+app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/notes', notesRouter);
 
 // Serve React static files

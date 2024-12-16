@@ -103,7 +103,6 @@ module.exports = {
         },
         'custom-pink': {
           DEFAULT: '#DB324D',
-
         },
         'auburn': {
           DEFAULT: '#A62639',
@@ -166,6 +165,47 @@ module.exports = {
           500: "#E55934",
 
         },
+        "glass": {
+          300: '#2A9D8F',
+          200: '#DDFFFB',
+          100: '#DDF9EB'
+        },
+        "custom-default": {
+          DEFAULT: '#0A0A0A',
+          800: '#0A0A0A',
+          900: '#0B1215',
+        },
+        "body": {
+          DEFAULT: '#F5F1ED',
+        },
+        "water-green": {
+          DEFAULT: '#2A9D8F',
+          500: '#2A9D8F',
+        },
+        "persian-green": {
+          DEFAULT: '#2A9D8F',
+        },
+        "rich-black": {
+          DEFAULT: '#0A0A0A',
+        },
+        "obsidian": {
+          DEFAULT: '#0B1215',
+        },
+        "arsenic": {
+          DEFAULT: '#11181C',
+        },
+        "saffron": {
+          DEFAULT: '#E9C46A',
+        },
+        "isabelline": {
+          DEFAULT: '#F5F1ED',
+        },
+        "carmine": {
+          DEFAULT: '#9A031E',
+        },
+        "stroke": {
+          DEFAULT: '#F5F1ED',
+        },
         gray: {
           DEFAULT: '#8492a6',
           50: '#f9fafb',
@@ -192,6 +232,9 @@ module.exports = {
         'rimouski-sb': ['Rimouski', 'Corben', 'Arial', 'sans-serif', 'sans-serif'],
         'wavefont': ['Wavefont', 'sans-serif'],
         'roboto': ['Roboto', 'sans-serif'],
+        'lora': ['Lora', 'Calibri', 'Roboto', 'serif'],
+        'reggae-one': ['Reggae One', 'normal'],
+        'dm-sans': ['DM Sans', 'sans-serif'],
         'montserrat': ['Montserrat', 'sans-serif'],
         'jost': ['Jost', 'sans-serif'],
         'corben': ['Corben', 'sans-serif'],

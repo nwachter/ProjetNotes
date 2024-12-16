@@ -40,7 +40,7 @@ const HomepageComponent = ({ notesData }) => {
             </ul>
         </div> */}
       <div>
-      
+
         {/* <header
           className="px-6 py-4 flex bg-cover bg-no-repeat flex-col shadow-md"
           style={{
@@ -91,20 +91,28 @@ const HomepageComponent = ({ notesData }) => {
         <main className="px-6 py-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {notes.map((note, index) => (
-              <div
-                key={index}
-                className="bg-gray-800 border-[#F5F1ED]/20 border-[1px] bg-gradient-to-t bg-opacity-[13%] from-gray-100/5 to-gray-100/10 rounded-md p-4 shadow-md relative overflow-hidden"
-              >
-                <h3 className="text-lg reggae-one-regular font-semibold text-teal-400 mb-2">
-                  {note.title}
-                </h3>
-                <p className="text-sm font-roboto text-gray-400 mb-4">
-                  {note.content}
-                </p>
-                <button className="absolute top-2 right-2 text-gray-500 hover:text-gray-300 transition">
-                  ⋮
-                </button>
+              // <div
+              //   key={index}
+              //   className="bg-gray-800 border-[#F5F1ED]/20 border-[1px] bg-gradient-to-t bg-opacity-[13%] from-gray-100/5 to-gray-100/10 rounded-md p-4 shadow-md relative overflow-hidden"
+              // >
+              <div className="bg-[#1E272A]/50">
+                <div
+                  key={index}
+                  className=" border-stroke/20 border-[1px] bg-gradient-to-t bg-opacity-[13%] from-glass-100/[7%] from-[100%] via-[0%] via-glass-200/0 to-glass-300/[40%] to-[0%] rounded-md p-4 shadow-md relative overflow-hidden"
+                >
+                  <h3 className="text-lg font-reggae-one font-medium text-teal-100/80 mb-2">
+                    {note.title}
+                  </h3>
+                  <p className="text-sm font-lora opacity-90 text-gray-400 mb-4">
+                    {note.content}
+                  </p>
+                  <button className="absolute top-2 right-2 text-gray-500 hover:text-gray-300 transition">
+                    ⋮
+                  </button>
+                </div>
+
               </div>
+
             ))}
           </div>
         </main>
