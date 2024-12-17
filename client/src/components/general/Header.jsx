@@ -42,14 +42,14 @@ const Header = () => {
         </div>
 
         <div className="flex items-center gap-6">
-          {/* <Link
+          <Link
             to="/signin"
             className="list"
-          > */}
-          <button className="px-4 font-dm-sans py-2 opacity-80 bg-transparent text-slate-100 font-semibold  mr-2">
-            Connexion
-          </button>
-          {/* </Link> */}
+          >
+            <button className="px-4 font-dm-sans py-2 opacity-80 bg-transparent text-slate-100 font-semibold  mr-2">
+              Connexion
+            </button>
+          </Link>
           <Link
             to="/signup"
             className="list"

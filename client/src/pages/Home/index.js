@@ -1,15 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { fetchAllNotes } from "../../services/notes";
+import { fetchAllNotesFromLS, getNotesByCreatorId } from "../../services/notes";
+import { decryptToken } from "../../utils/decryptJwt";
 
 const HomepageComponent = ({ notesData }) => {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userId, setUserId] = useState("");
+  const token = decryptToken("token");
+
+  console.log("Token : ", token);
+
+
+
+  useEffect(() => {
+    let updatedUserId = userId;
+
+    if (token) {
+      updatedUserId = token.id;
+    }
+    setUserId(updatedUserId);
+
+
+  }, [token])
 
   useEffect(() => {
     const getNotes = async () => {
       try {
-        const data = await fetchAllNotes();
+        let data;
+        if (!userId) {
+          data = await fetchAllNotesFromLS();
+        }
+        else {
+          data = await getNotesByCreatorId(userId);
+        }
         setNotes(data);
       } catch (err) {
         setError("Failed to fetch notes.");
@@ -19,10 +43,12 @@ const HomepageComponent = ({ notesData }) => {
     };
 
     getNotes();
-  }, []);
+  }, [userId]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+
+  if (loading) return <main className="px-6 py-8"><p>Loading...</p></main>;
+  if (!userId) return <main className="px-6 py-8"><p className="text-center font-semibold text-2xl">You are not logged in</p></main>;
+  if (error) return <main className="px-6 py-8">{error}</main>;
 
   return (
     <>
@@ -89,6 +115,7 @@ const HomepageComponent = ({ notesData }) => {
         </header> */}
 
         <main className="px-6 py-8">
+          <p></p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {notes.map((note, index) => (
               // <div
