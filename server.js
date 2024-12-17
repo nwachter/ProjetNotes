@@ -11,16 +11,17 @@ const app = express();
 app.use(express.json()); // Parse JSON requests
 app.use(express.urlencoded({ extended: true }));
 
-//kkk
-
 //Cors
-
 app.use(cors());
 
+
+
 //Routes
-const authRouter = require('./routes/authRoutes')
+const authRouter = require('./routes/authRoutes');
+const usersRouter = require('./routes/usersRoutes');
 const notesRouter = require('./routes/notesRoutes');
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/notes', notesRouter);
 
 // Serve React static files
@@ -37,5 +38,3 @@ app.get('*', (req, res) => {
 app.listen(PORT, hostname, () => {
     console.log(`Le serveur est démarré sur http://${hostname}:${PORT}`);
 });
-
-
