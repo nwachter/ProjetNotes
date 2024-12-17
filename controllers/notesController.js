@@ -40,7 +40,12 @@ const getNoteById = async (req, res) => {
         // const data = readData("notes");
         const database = client.db('ProjetNotes');
         const notesCollection = database.collection('notes');
-        const data = await notesCollection.findOne({ _id: MongoClient.ObjectId(req.params.id) })?.toArray();
+        const objectId = new ObjectId(req.params.id);
+        const data = await notesCollection.findOne({ _id: objectId });
+
+        if (!data) {
+            return res.status(404).json({ error: `Note #${req.params.id} not found` });
+        }
 
         res.json(data);
     } catch (error) {
@@ -60,7 +65,13 @@ const getNotesByCreatorId = async (req, res) => {
         // const data = readData("notes");
         const database = client.db('ProjetNotes');
         const notesCollection = database.collection('notes');
-        const data = await notesCollection.find({ creator_id: MongoClient.ObjectId(req.params.id) })?.toArray();
+           const creatorId = new ObjectId(req.params.id);
+ 
+        const data = await notesCollection.find({ creator_id: creatorId })?.toArray();
+
+        if (!data.length) {
+            return res.status(404).json({ message: `No notes found for creator #${req.params.id}` });
+        }
 
         res.json(data);
     } catch (error) {
@@ -133,9 +144,10 @@ const deleteNote = async (req, res) => {
 
         const database = client.db('ProjetNotes');
         const notesCollection = database.collection('notes');
+        const objectId = new ObjectId(req.params.id);
 
         // Corrected method to insert one note
-        const data = await notesCollection.deleteOne({ _id: MongoClient.ObjectId(req.params.id) });
+        const data = await notesCollection.deleteOne({ _id: objectId });
 
         res.status(201).json(data); // Use 201 for successful deletion
     } catch (error) {

@@ -30,7 +30,9 @@ const getUserById = async (req, res) => {
         const database = client.db('ProjetNotes');
         const usersCollection = database.collection('users');
         const options = { ordered: true };
-        const data = await usersCollection.findOne({ _id: MongoClient.ObjectId(req.params.id) });
+        const objectId = new ObjectId(req.params.id);
+
+        const data = await usersCollection.findOne({ _id: objectId }, options);
 
         res.json(data);
     } catch (error) {
@@ -53,7 +55,8 @@ const updateUser = async (req, res) => {
                 ...req.body
             }
         }
-        const query = { _id: MongoClient.ObjectId(req.params.id) };
+        const objectId = new ObjectId(req.params.id);
+        const query = { _id: objectId };
         const result = await usersCollection.updateOne(query, updatedUser);
 
         if (result.matchedCount === 1) {
@@ -76,8 +79,8 @@ const deleteUser = async (req, res) => {
         const client = new MongoClient(MONGODB_URI);
         const database = client.db('ProjetNotes');
         const usersCollection = database.collection('users');
-        // const query = { _id: MongoClient.ObjectId(req.params.id) };
-        const query = { _id: client.ObjectId(req.params.id) };
+        const objectId = new ObjectId(req.params.id);
+        const query = { _id: objectId };
 
 
         const result = await usersCollection.deleteOne(query);
