@@ -3,8 +3,13 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
+const { importUsers, importNotes } = require('./controllers/notesController');
+const { usersData } = require('./data/users');
+const { notesData } = require('./data/notes');
 
 const hostname = 'localhost';
+const URI = process.env.MONGODB_URI;
 const PORT = Number(process.env.PORT || 4000);
 
 const app = express();
@@ -14,6 +19,11 @@ app.use(express.urlencoded({ extended: true }));
 //Cors
 app.use(cors());
 
+mongoose.connect(URI).then(() => {
+    console.log("La connexion MongoDB est établie")
+}).catch((error) => {
+    console.log(error)
+});
 
 
 //Routes
