@@ -12,53 +12,57 @@ const SigninComponent = () => {
   ]);
   const [errors, setErrors] = useState({ username: '' },
     { password: '' },);
+
+  const [alert, setAlert] = useState({ type: '', message: '' });
+
+  const alertData = {
+    danger: {
+      type: "error",
+      name: "Erreur !",
+      message: "Erreur lors de la connexion",
+      css: "p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 transition-all"
+    },
+    success: {
+      type: "success",
+      name: "Succès !",
+      message: "Connexion reussie",
+      css: "p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 transition-all"
+    }
+  };
+
+  const validateInput = (value, min, max, regex, name) => {
+    const translatedName = name === "password" ? "mot de passe" : "pseudo";
+    if (value.length < min) {
+      return `Le ${translatedName} doit contenir au moins ${min} caractères`;
+    }
+    if (value.length > max) {
+      return `Le ${translatedName} doit contenir au plus ${max} caractères`;
+    }
+    if (!regex.test(value)) {
+      return name === "password"
+        ? `Le ${translatedName} doit contenir au moins une lettre majuscule, une lettre minuscule et un chiffre`
+        : `Le ${translatedName} ne doit pas contenir de caractères spéciaux`;
+    }
+    return "";
+  };
+
+  const handleChange = (event, fieldName, min, max, regex) => {
+    const value = event.target.value;
+    const error = validateInput(value, min, max, regex, fieldName);
+
+    setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: error }));
+    setInputs((prevInputs) => ({ ...prevInputs, [fieldName]: value }));
+  };
+
   const handleChangeUsername = (event) => {
-    let updatedUsername = inputs.username;
-    let updatedUsernameError = errors.username;
-    if (event.target.value.length < 3) {
-      updatedUsernameError = "Le pseudo doit contenir au moins 3 caractères";
-    }
-    else if (event.target.value.length > 20) {
-      updatedUsernameError = "Le pseudo doit contenir au plus 20 caractères";
-    }
-    else {
-      updatedUsernameError = "";
-    }
-
-    if (event.target.value !== '') {
-      updatedUsername = event.target.value;
-    }
-
-    setErrors({ ...errors, username: updatedUsernameError });
-    setInputs({ ...inputs, username: updatedUsername });
-  }
+    const usernameRegex = /^[a-zA-Z0-9]+$/;
+    handleChange(event, "username", 3, 20, usernameRegex);
+  };
 
   const handleChangePassword = (event) => {
-    //Regex :  at least one uppercase letter, at least one lowercase letter, at least one number
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-
-    let updatedPassword = inputs.password;
-    let updatedPasswordError = errors.password;
-    if (event.target.value.length < 8) {
-      updatedPasswordError = "Le mot de passe doit contenir au moins 8 caractères";
-    }
-    else if (event.target.value.length > 20) {
-      updatedPasswordError = "Le mot de passe doit contenir au plus 20 caractères";
-    }
-    else if (passwordRegex.test(event.target.value) === false) {
-      updatedPasswordError = "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule et un chiffre";
-    }
-    else {
-      updatedPasswordError = "";
-    }
-
-    if (event.target.value !== '') {
-      updatedPassword = event.target.value;
-    }
-
-    setErrors({ ...errors, password: updatedPasswordError });
-    setInputs({ ...inputs, password: updatedPassword });
-  }
+    handleChange(event, "password", 8, 20, passwordRegex);
+  };
 
   // const handleSubmit = (event) => {
   //   event.preventDefault();
@@ -78,12 +82,24 @@ const SigninComponent = () => {
     try {
       const data = await login(username, password); // Correct call
 
+      console.log("Data signin : ", data);
+
       if (data && data.token) {
-        alert('Login successful!');
-        localStorage.setItem('token', data.token); // Save token locally
-      } else {
-        alert(data.error || 'Login failed');
+        localStorage.setItem('token', data.token);
       }
+
+      const alertType = data?.user ? 'success' : 'danger';
+      setAlert({
+        type: alertType,
+        message: alertData[alertType].message
+      });
+
+      setTimeout(() => {
+        if (data?.user) {
+          window.location.href = '/';
+
+        }
+      }, 4000);
     } catch (error) {
       console.error('Error:', error);
       alert('Server error, please try again later.');
@@ -95,6 +111,11 @@ const SigninComponent = () => {
       {/* Left Section - Form */}
       <div className="flex-1 flex justify-center items-center border-stroke/10 border-[5px] bg-gradient-to-t bg-opacity-[13%] from-glass-100/[7%] from-[100%] via-[0%] via-glass-200/0 to-glass-300/[40%] to-[0%] rounded-md p-4 shadow-md relative overflow-hidden">
         <div className="p-8 rounded-lg relative max-w-md">
+          {alert.type && alertData[alert.type] && (
+            <div className={alertData[alert.type].css} role="alert">
+              <span className="font-semibold">{alertData[alert.type].name}</span> {alert.message}
+            </div>
+          )}
           <img src={glassDonut} alt="Glass Donut" className="z-0 absolute top-2 left-2 right-2 h-72 w-72 mb-6" />
           <h2 className="text-4xl font-bold font-reggae-one text-center my-6">Connectez-vous</h2>
           <form className='flex flex-col gap-6' action='http://localhost:3000' onSubmit={handleSubmit}>
@@ -139,9 +160,9 @@ const SigninComponent = () => {
       </div>
 
       {/* Right Section - Notes Display */}
-      <div className="flex-1 bg-gradient-to-br border-stroke/10 border-[1px] bg-opacity-[13%] from-carmine/[7%] from-[100%] via-[0%] via-glass-200/0 to-carmine/[60%] to-[50%] rounded-md p-4 shadow-md relative overflow-hidden flex flex-col justify-center items-center">
-        <div className="space-y-6">
-          <div className="bg-gray-800 bg-opacity-60 p-6 rounded-lg max-w-sm">
+      <div className="flex-1 relative bg-gradient-to-br border-stroke/10 border-[1px] bg-opacity-[13%] from-carmine/[7%] from-[100%] via-[0%] via-glass-200/0 to-carmine/[60%] to-[50%] rounded-md p-4 shadow-md overflow-hidden flex justify-center items-end">
+        <div className="space-y-6 ">
+          <div className="absolute top-0 z-[2] left-[3vw] w-[22vw]  h-[40vh] border-stroke/10 border-[1px] bg-gradient-to-t bg-opacity-[13%] from-glass-100/[7%] from-[100%] via-[0%] via-glass-200/0 to-glass-300/[40%] to-[0%] rounded-md p-4 shadow-md overflow-hidden">
             <h3 className="text-xl font-medium mb-2 font-reggae-one">Lorem ipsum sic</h3>
             <p className="text-sm text-gray-300 font-lora">
               Lorem ipsum dolor sit amet consectetur. Felis ultrices morbi
@@ -150,7 +171,7 @@ const SigninComponent = () => {
               tristique feugiat consectetur volutpat sed.
             </p>
           </div>
-          <div className="bg-gray-800 bg-opacity-60 p-6 rounded-lg max-w-sm">
+          <div className="absolute top-36 z-[3] left-[17vw] w-[22vw]  h-[40vh] border-stroke/10 border-[1px] bg-gradient-to-t bg-opacity-[13%] from-glass-100/[7%] from-[100%] via-[0%] via-glass-200/0 to-glass-300/[40%] to-[0%] rounded-md p-4 shadow-md overflow-hidden">
             <h3 className="text-xl font-medium mb-2 font-reggae-one">Lorem ipsum sic</h3>
             <p className="text-sm text-gray-300 font-lora">
               Lorem ipsum dolor sit amet consectetur. Felis ultrices morbi
@@ -160,7 +181,7 @@ const SigninComponent = () => {
             </p>
           </div>
         </div>
-        <p className="mt-12 font-reggae-one text-2xl font-bold">
+        <p className="font-reggae-one text-2xl font-bold">
           et consultez vos notes
         </p>
       </div>

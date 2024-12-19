@@ -2,8 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/Logo.png";
 import headerBg from "../../assets/backgrounds/header_bg.png";
+import newIcon from "../../assets/icons/new_icon.svg";
 
-const Header = () => {
+const Header = ({ username }) => {
   return (
     <header
       className="px-6 py-4 flex bg-cover bg-no-repeat flex-col shadow-md"
@@ -28,20 +29,22 @@ const Header = () => {
                 Notes
               </button>
             </Link>
+            <img src={newIcon} alt="New note icon" className="w-auto hover:filter active:filter hover:brightness-125 active:brightness-90 transition-all  h-auto" />
+
             {/* <Link
             to="/tags"
             className="list"
           > */}
-            <button className="px-4 py-2 font-dm-sans font-semibold opacity-80 bg-transparent text-slate-100  mr-2">
+            {/* <button className="px-4 py-2 font-dm-sans font-semibold opacity-80 bg-transparent text-slate-100  mr-2">
               Tags
-            </button>
+            </button> */}
             {/* </Link> */}
 
           </div>
 
         </div>
 
-        <div className="flex items-center gap-6">
+        {username === undefined ? <div className="flex items-center gap-6">
           <Link
             to="/signin"
             className="list"
@@ -59,21 +62,17 @@ const Header = () => {
             </button>
           </Link>
         </div>
+          : <div className="flex items-center gap-6">
+            <p className="px-4 font-dm-sans py-2 opacity-80 bg-transparent text-slate-100 font-semibold  mr-2">Bienvenue, {username}
+            </p>
+
+          </div>
+        }
       </div>
       <blockquote className="text-custom-yellow-200 font-lora opacity-20 italic text-center text-lg mb-8">
         "The discipline of writing something down is the first step toward
         making it happen." – Lee Iacocca
       </blockquote>
-      <div className="flex justify-center gap-4 flex-wrap mb-8">
-        {["Value", "Value", "Value", "Value"].map((value, index) => (
-          <button
-            key={index}
-            className="px-6 py-2 bg-teal-700 text-gray-100 rounded-md shadow hover:bg-teal-600 transition"
-          >
-            {value}
-          </button>
-        ))}
-      </div>
     </header>
   );
 };

@@ -120,7 +120,16 @@ const HomepageComponent = ({ notesData }) => {
         </header> */}
 
         <main className="px-6 py-8">
-          <p></p>
+          <div className="flex justify-center gap-4 flex-wrap mb-8">
+            {["Value", "Value", "Value", "Value"].map((value, index) => (
+              <button
+                key={index}
+                className="px-6 py-2 bg-teal-700 text-gray-100 rounded-full shadow hover:bg-teal-600 transition"
+              >
+                {value}
+              </button>
+            ))}
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {notes.map((note, index) => (
               // <div
@@ -132,13 +141,13 @@ const HomepageComponent = ({ notesData }) => {
                   key={index}
                   className=" border-stroke/20 border-[1px] bg-gradient-to-t bg-opacity-[13%] from-glass-100/[7%] from-[100%] via-[0%] via-glass-200/0 to-glass-300/[40%] to-[0%] rounded-md p-4 shadow-md relative overflow-hidden"
                 >
-                  <h3 className="text-lg font-reggae-one font-medium text-teal-100/80 mb-2">
+                  <h3 className="text-lg font-reggae-one font-medium text-isabelline/80 mb-2">
                     {note.title}
                   </h3>
-                  <p className="text-sm font-lora opacity-90 text-gray-400 mb-4">
+                  <p className="text-sm font-lora opacity-90 text-isabelline/90 mb-4">
                     {note.content}
                   </p>
-                  <button className="absolute top-2 right-2 text-gray-500 hover:text-gray-300 transition">
+                  <button className="absolute top-2 right-2 text-isabelline/90 hover:text-gray-300 transition">
                     ⋮
                   </button>
                 </div>

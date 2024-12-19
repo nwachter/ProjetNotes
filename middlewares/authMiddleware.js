@@ -1,4 +1,4 @@
-require('dotenv').config({ path: 'config.env' });
+// require('dotenv').config({ path: 'config.env' }); //Attention
 
 const jwt = require('jsonwebtoken');
 
@@ -9,7 +9,7 @@ const authenticate = (req, res, next) => {
     }
 
     try {
-        const decodedToken = jwt.verify(token, process.env.SECRET);
+        const decodedToken = jwt.verify(token, process.env.SECRET); // Attention
         req.user = decodedToken;
         next();
     }

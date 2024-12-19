@@ -1,8 +1,8 @@
-require('dotenv').config({ path: 'config.env' });
-const { MongoClient, ObjectId } = require('mongodb');
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const UserModel = require("../models/User");
+const TokenBlacklistModel = require("../models/tokenBlackList");
 
 
 //Register Users
@@ -56,19 +56,6 @@ const registerUser = async (req, res) => {
     }
 
     try {
-        // const client = new MongoClient(MONGODB_URI);
-        // await client.connect();
-
-        // const database = client.db('ProjetNotes');
-        // const usersCollection = database.collection('users');
-
-
-        // const existingUser = await usersCollection.findOne({ email });
-        // if (existingUser) {
-        //     return res.status(409).json({
-        //         message: 'User email already exists in the database',
-        //     });
-        // }
 
         const existingUser = await UserModel.findOne({ email })
         if (existingUser) {
@@ -77,14 +64,14 @@ const registerUser = async (req, res) => {
             })
         }
 
-
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const newUser = new UserModel({
             username,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            roles: ["user"]
         });
 
         // await usersCollection.insertOne(newUser);
@@ -110,27 +97,12 @@ const loginUser = async (req, res) => {
             });
         }
 
-
-        // const client = new MongoClient(MONGODB_URI);
-        // await client.connect();
-
-        // const database = client.db('ProjetNotes');
-        // const usersCollection = database.collection('users');
-
-        // const user = await usersCollection.findOne({ username });
-        // if (!user) {
-        //     return res.status(401).json({
-        //         error: 'Invalid credentials',
-        //     });
-        // }
-
         const user = await UserModel.findOne({ username: username });
         if (!user) {
             return res.status(404).json({
                 error: "Username not found"
             })
         }
-
 
         const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) {
@@ -175,6 +147,44 @@ const loginUser = async (req, res) => {
     }
 };
 
+const logoutUser = async (req, res) => {
+    try {
+        //EXTRACT TOKEN FROM COOKIE
+        const token = req.cookies.token;
+        if (!token) {
+            return res.status(400).json({ message: "No token provided" }); //401 = pas la permission
+        }
+
+        //DECODE TOKEN TO GET EXPIRA
+        const decoded = jwt.decode(token);
+        const expiresAt = new Date(decoded.exp) * 1000; // Convert expiration date to milliseconds
+
+        // ADD TOKEN TO BLACKLIST
+        await TokenBlacklistModel.create({ token, expiresAt });
+
+        //CLEAR COOKIE ON THE CLIENT SIDE
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: true,
+            sameSite: "strict",
+
+        });
+
+        res.status(200).json({
+            message: "Logout successful",
+        })
+
+    }
+    catch (error) {
+        console.log("Logout error :", error);
+        res.status(500).json({
+            error: "Error during logout"
+        })
+
+    }
+
+}
 
 
-module.exports = { registerUser, loginUser };
+
+module.exports = { registerUser, loginUser, logoutUser };
