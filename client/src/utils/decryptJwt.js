@@ -1,8 +1,9 @@
 import { jwtDecode } from 'jwt-decode';
+import { getUserInfo } from '../services/auth';
 
 export const decryptToken = (tokenKey) => {
     try {
-     console.log("document cookie : ", document.cookie);
+        console.log("document cookie : ", document.cookie);
         //Get cookie named "token"
         const tokenFromCookie = document.cookie.split('; ').find(row => row.startsWith('token='));
         if (tokenFromCookie !== undefined) {
@@ -22,3 +23,14 @@ export const decryptToken = (tokenKey) => {
         return null;
     }
 };
+
+export const checkConnectionAndGetInfo = async () => {
+    let userData;
+    const isConnected = await localStorage.getItem('isConnected') === 'true';
+    if (isConnected) {
+        userData = await getUserInfo();
+    }
+    else userData = false;
+
+    return userData;
+}

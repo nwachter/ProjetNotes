@@ -90,6 +90,7 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     const MONGODB_URI = process.env.MONGODB_URI;
     const { username, password } = req.body;
+    console.log("Login req.body : ", req.body)
     try {
         if (!username || !password) {
             return res.status(400).json({
@@ -185,6 +186,25 @@ const logoutUser = async (req, res) => {
 
 }
 
+const verifyTokenAndGetUserInfo = async (req, res) => {
+    const token = req.cookies.token;
+    if (!token) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    try {
+        const blacklistedToken = await TokenBlacklistModel.findOne({ token }); //Check if token is in the blacklist collection
+
+        if (blacklistedToken) {  //Attention
+            return res.status(403).json({ message: "Token is expired" });
+        }
+        const decoded = jwt.verify(token, process.env.SECRET);
+        res.json({ user: decoded });
+    } catch (error) {
+        res.status(401).json({ error: "Invalid token" });
+    }
+}
 
 
-module.exports = { registerUser, loginUser, logoutUser };
+
+module.exports = { registerUser, loginUser, logoutUser, verifyTokenAndGetUserInfo };

@@ -4,7 +4,6 @@ import { login } from '../../services/auth';
 import { useState } from 'react';
 
 
-
 const SigninComponent = () => {
   const [inputs, setInputs] = useState([
     { username: '' },
@@ -14,6 +13,8 @@ const SigninComponent = () => {
     { username: '' },
     { password: '' }
   );
+
+  console.log()
 
   const [alert, setAlert] = useState({ type: '', message: '' });
 
@@ -66,15 +67,6 @@ const SigninComponent = () => {
     handleChange(event, "password", 8, 20, passwordRegex);
   };
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   if (errors.password !== "" || errors.username !== "") return;
-  //   let { username, password } = inputs;
-  //   username = username.trim();
-  //   password = password.trim();
-  //   register(inputs.username, inputs.password);
-  // }
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -86,9 +78,10 @@ const SigninComponent = () => {
 
       console.log("Data signin : ", data);
 
-      // if (data && data.token) {
-      //   localStorage.setItem('token', data.token);
-      // }
+      if (data && data.token) {
+        localStorage.setItem('isConnected', true);
+        //   localStorage.setItem('token', data.token);
+      }
 
       const alertType = data?.user ? 'success' : 'danger';
       setAlert({

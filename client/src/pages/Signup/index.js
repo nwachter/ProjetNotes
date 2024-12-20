@@ -4,7 +4,6 @@ import { register } from '../../services/auth';
 import { useState } from 'react';
 
 
-
 const SignupComponent = () => {
   const [inputs, setInputs] = useState({
     username: '',

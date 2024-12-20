@@ -53,4 +53,14 @@ const logout = async () => {
         throw error;
     }
 };
-export { register, login, logout };
+
+const getUserInfo = async () => {
+    try {
+        const response = await api.get('/verify');
+        return response.data;
+    } catch (error) {
+        console.error('Failed to verify token and get user info:', error);
+        throw error;
+    }
+}
+export { register, login, logout, getUserInfo };

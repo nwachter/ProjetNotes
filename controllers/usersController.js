@@ -127,36 +127,74 @@ const getUserById = async (req, res) => {
     }
 }
 
-const updateUser = async (req, res) => {
-    try {
-        const updatedUser = await UserModel.findByIdAndUpdate(
-            req.params.id,
-            { $set: req.body },
-            { new: true, runValidators: true }
-        );
 
-        if (!updatedUser) {
-            return res.status(404).json({ error: "User not found" });
+const updateUser = async (req, res) => {
+
+    if (req.body.userId !== req.params.id) {
+        //on compare l'id envoye dans les params avec l'id dans le body     //Quand on login, l'id est tjrs présent dans le body
+        return res.status(500).json({
+            error: "You can only update your own profile"
+        })
+    }
+
+    // console.log("Body userId : ", req.body.userId);
+
+    try {
+        let updatedData = { ...req.body };
+        //CHECK PASSWORD IF PROVIDED
+        if (req.body.password) {
+            const salt = await bcrypt.genSalt(10);
+            updatedData.password = await bcrypt.hash(req.body.password, salt);
         }
 
-        res.json({ message: "User Updated", user: updatedUser });
+        //UPDATE USER DATA
+        const updatedUser = await UserModel.findByIdAndUpdate(
+            req.body.id,
+            { $set: updatedData }, // UPDATE FIELDS PROVIDED IN THE REQUEST BODY, FIELDS NOT INCLUDED IN req.body WILL NOT BE UPDATED
+            { new: true } //ENSURES THAT THE METHOD RETURNS THE NEW UPDATED DATA, NOT THE OLD ONE
+        );
+        res.status(200).json(updatedUser);
+
     } catch (error) {
-        res.status(500).json({ error: "Failed to update user" });
+        console.error('Updating error', error);
+        res.status(500).json({ error: error.message });
     }
 }
 
 const deleteUser = async (req, res) => {
     try {
-        const deletedUser = await UserModel.findByIdAndDelete(req.params.id);
+        const { id } = req.params;
 
-        if (!deletedUser) {
+        //Validate id
+        if (!id) {
+            return res.status(400).json({ error: "User ID is required" });
+        }
+
+        console.log("id to delete : ", id);
+        console.log("req.user : ", req.user);
+
+        //CHECK IF USER TRYING TO DELETE THEIR OWN USER OR IS NOT ADMIN
+        if (req.user.id === id && req.user.isAdmin) { //if user tries to delets his own account and user is admin, he can't delete
+            return res.status(403).json({ error: "You are not authorized to delete this user" });
+        }
+
+        //Check if user exists in the database
+        const user = await UserModel.findById(id);
+        if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
 
-        res.json({ message: "User deleted" });
-    } catch (error) {
-        res.status(500).json({ error: "Failed to delete user" });
+        // DELETE USER FROM DB
+        await UserModel.findByIdAndDelete(id);
+
+        //CHECK IF USER THAT I WANT TO DELETE EXISTS
+        res.status(200).json({ message: "User deleted successfully" });
+    }
+    catch (error) {
+        console.error('Deleting user error', error);
+        res.status(500).json({ error: "Error during user deletion :" + error.message });
     }
 }
+
 
 module.exports = { getAllUsers, getUserById, updateUser, deleteUser };
