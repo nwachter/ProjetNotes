@@ -5,7 +5,8 @@ const api = axios.create({
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
-    }
+    },
+    withCredentials: true 
 });
 
 export const fetchAllNotes = async () => {
@@ -44,6 +45,7 @@ export const createNoteInLS = (note) => {
     const notes = JSON.parse(localStorage.getItem('notes')) || [];
     notes.push(note);
     localStorage.setItem('notes', JSON.stringify(notes));
+    return note;
 };
 
 export const createNote = async (data) => {

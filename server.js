@@ -4,6 +4,7 @@ const http = require('http');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const { importUsers, importNotes } = require('./controllers/notesController');
 const { usersData } = require('./data/users');
 const { notesData } = require('./data/notes');
@@ -18,6 +19,9 @@ app.use(express.urlencoded({ extended: true }));
 
 //Cors
 app.use(cors());
+
+//cookie parser
+app.use(cookieParser());
 
 mongoose.connect(URI).then(() => {
     console.log("La connexion MongoDB est établie")

@@ -7,7 +7,8 @@ const api = axios.create({
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
-    }
+    },
+    withCredentials: true  //Ajouter après url des get si besoin a la place
 });
 
 api.interceptors.request.use((config) => {
@@ -43,4 +44,13 @@ const login = async (username, password) => {
     }
 };
 
-export { register, login };
+const logout = async () => {
+    try {
+        const response = await api.post('/logout');
+        return response.data;
+    } catch (error) {
+        console.error('Failed to logout:', error);
+        throw error;
+    }
+};
+export { register, login, logout };

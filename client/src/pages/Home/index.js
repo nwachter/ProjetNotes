@@ -9,10 +9,8 @@ const HomepageComponent = ({ notesData }) => {
   const [userId, setUserId] = useState("");
   const token = decryptToken("token");
 
-  //Get cookie named "token"
-  const tokenFromCookie = document.cookie.split('; ').find(row => row.startsWith('token='));
-  if (tokenFromCookie !== undefined) {
-    console.log("Cookie : ", tokenFromCookie);
+  if (token !== undefined) {
+    console.log("Cookie : ", token);
   }
   console.log("Token : ", token);
 

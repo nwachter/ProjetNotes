@@ -10,8 +10,10 @@ const SigninComponent = () => {
     { username: '' },
     { password: '' },
   ]);
-  const [errors, setErrors] = useState({ username: '' },
-    { password: '' },);
+  const [errors, setErrors] = useState(
+    { username: '' },
+    { password: '' }
+  );
 
   const [alert, setAlert] = useState({ type: '', message: '' });
 
@@ -84,9 +86,9 @@ const SigninComponent = () => {
 
       console.log("Data signin : ", data);
 
-      if (data && data.token) {
-        localStorage.setItem('token', data.token);
-      }
+      // if (data && data.token) {
+      //   localStorage.setItem('token', data.token);
+      // }
 
       const alertType = data?.user ? 'success' : 'danger';
       setAlert({
@@ -94,12 +96,12 @@ const SigninComponent = () => {
         message: alertData[alertType].message
       });
 
-      setTimeout(() => {
-        if (data?.user) {
-          window.location.href = '/';
+      // setTimeout(() => {
+      //   if (data?.user) {
+      //     window.location.href = '/';
 
-        }
-      }, 4000);
+      //   }
+      // }, 4000);
     } catch (error) {
       console.error('Error:', error);
       alert('Server error, please try again later.');

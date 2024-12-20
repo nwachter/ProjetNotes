@@ -4,7 +4,7 @@ import logo from "../../assets/images/Logo.png";
 import headerBg from "../../assets/backgrounds/header_bg.png";
 import newIcon from "../../assets/icons/new_icon.svg";
 
-const Header = ({ username }) => {
+const Header = ({ username, logout, onCreateNote }) => {
   return (
     <header
       className="px-6 py-4 flex bg-cover bg-no-repeat flex-col shadow-md"
@@ -62,11 +62,11 @@ const Header = ({ username }) => {
             </button>
           </Link>
         </div>
-          : <div className="flex items-center gap-6">
-            <p className="px-4 font-dm-sans py-2 opacity-80 bg-transparent text-slate-100 font-semibold  mr-2">Bienvenue, {username}
-            </p>
-
-          </div>
+          :          
+          <button  onClick={logout} className="px-6 font-dm-sans py-3 rounded-full border-[1px] border-slate-100  font-semibold opacity-80 bg-transparent text-slate-100  mr-2">
+           Deconnexion
+          </button>
+  
         }
       </div>
       <blockquote className="text-custom-yellow-200 font-lora opacity-20 italic text-center text-lg mb-8">
