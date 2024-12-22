@@ -6,7 +6,7 @@ import newIcon from "../../assets/icons/new_icon.svg";
 import { checkConnectionAndGetInfo } from "../../utils/decryptJwt";
 
 
-const Header = ({ logout }) => {
+const Header = ({ logout, toggleSignInModal, toggleSignUpModal }) => {
   const [userData, setUserData] = useState(null); // Initialize as null
 
   useEffect(() => {
@@ -28,11 +28,11 @@ const Header = ({ logout }) => {
   }, []);
 
 
-
   const handleLogout = () => {
     localStorage.setItem('isConnected', false);
     logout();
   };
+
 
   return (
     <header
@@ -58,8 +58,8 @@ const Header = ({ logout }) => {
                 Notes
               </button>
             </Link>
-            {userData === false && <Link to="/new" className="h-fit w-fit"><img src={newIcon} alt="New note icon" className="w-auto hover:filter active:filter hover:brightness-125 active:brightness-90 transition-all  h-auto" /></Link>
-            }
+             <Link to="/new" className="h-fit w-fit"><img src={newIcon} alt="New note icon" className="w-auto hover:filter active:filter hover:brightness-125 active:brightness-90 transition-all  h-auto" /></Link>
+            
             {/* <Link
             to="/tags"
             className="list"
@@ -75,22 +75,24 @@ const Header = ({ logout }) => {
 
         {userData === false || !userData?.username ? (
           <div className="flex items-center gap-6">
-            <Link
+            {/* <Link
               to="/signin"
               className="list"
-            >
-              <button className="px-4 font-dm-sans py-2 opacity-80 bg-transparent text-slate-100 font-semibold  mr-2">
+            > */}
+              <button onClick={toggleSignInModal} className="px-4 font-dm-sans py-2 opacity-80 bg-transparent text-slate-100 font-semibold  mr-2">
                 Connexion
               </button>
-            </Link>
-            <Link
+            {/* </Link> */}
+            {/* <Link
               to="/signup"
               className="list"
-            >
-              <button className="px-6 font-dm-sans py-3 rounded-full border-[1px] border-slate-100  font-semibold opacity-80 bg-transparent text-slate-100  mr-2">
+            > */}
+              <button 
+               onClick={toggleSignUpModal}
+               className="px-6 font-dm-sans py-3 rounded-full border-[1px] border-slate-100  font-semibold opacity-80 bg-transparent text-slate-100  mr-2">
                 Inscription
               </button>
-            </Link>
+            {/* </Link> */}
           </div>
         ) : (
           <button onClick={handleLogout} className="px-6 font-dm-sans py-3 rounded-full border-[1px] border-slate-100  font-semibold opacity-80 bg-transparent text-slate-100  mr-2">

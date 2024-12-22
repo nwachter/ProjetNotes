@@ -5,6 +5,7 @@ import SignupComponent from "./pages/Signup";
 import SigninComponent from "./pages/Signin";
 import Layout from "./components/general/Layout";
 import NewNoteComponent from "./pages/NewNote";
+import NoteComponent from "./pages/Note";
 
 
 function App() {
@@ -18,6 +19,8 @@ function App() {
         <Route path="/signup" element={<SignupComponent />} />
         <Route path="/signin" element={<SigninComponent />} />
         <Route path="/new" element={<NewNoteComponent />} />
+        <Route path="/note/:id" element={<NoteComponent />} />
+
       </Routes>
     </Layout>
   );

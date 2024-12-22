@@ -8,7 +8,8 @@ const NewNoteComponent = () => {
   const [userData, setUserData] = useState({});
   const [formData, setFormData] = useState({
     title: "",
-    content: ""
+    content: "",
+    tags: [],
   });
 
   const handleInputChange = (e) => {
@@ -31,9 +32,9 @@ const NewNoteComponent = () => {
       if (!userData) {
         createdNote = await createNoteInLS(formData);
       } else {
+        if(formData.tags.length > 0) formData.tags = formData.tags.split(',').map(tag => tag.trim());
         createdNote = await createNote({
-          creator_id: userData._id,
-          tags: [], //Attention, a completer
+          // creator_id: userData.id,
           image: "", //Attention, a completer!
           ...formData
         });
@@ -104,11 +105,21 @@ const NewNoteComponent = () => {
                 className="text-sm h-[40vh] w-full opacity-90 bg-black/5 text-isabelline/90 mb-4 p-2 rounded border border-gray-700 focus:outline-none focus:border-teal-500"
               />
 
+<input
+                name="tags"
+                type="text"
+                value={formData.tags}
+                onChange={handleInputChange}
+                placeholder="Tags"
+                className="text-lg font-medium bg-black/5 text-isabelline/80 h-12 w-full mb-2 p-2 rounded border border-gray-700 focus:outline-none focus:border-teal-500"
+              />
+
               <button
                 type="submit"
-                className="absolute bg-yellow-950 text-white h-12 w-24 py-2 px-4 top-2 right-2 hover:text-teal-400 transition"
+                className=" bg-teal-500 rounded-3xl text-white h-12 w-24 py-2 px-4 top-2 right-2 hover:text-teal-400 transition"
                 title="Create Note"
               >
+                Créer
 
               </button>
             </form>
