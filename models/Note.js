@@ -16,6 +16,8 @@ const noteSchema = new mongoose.Schema({
     tags: {
         type: Array,
         required: true,
+        default: [],
+        ref: "Tag",
     },
     creator_id: {
         type: mongoose.Schema.Types.ObjectId,

@@ -14,6 +14,18 @@ const getAllNotes = async (req, res) => {
     }
 }
 
+const getNotesByTag = async (req, res) => {
+    try {
+        if(!req.params.tags) {
+            res.status(400).json({error: "No tag was given"});
+        }
+        const data = await NoteModel.find({ tags: req.params.tags });
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch notes by tag" });
+    }
+}
+
 // Get Note by id
 const getNoteById = async (req, res) => {
     try {
@@ -161,6 +173,7 @@ module.exports = {
     importNotes,
     importUsers,
     getAllNotes,
+     getNotesByTag,
     getNotesByCreatorId,
     getNoteById,
     createNote,

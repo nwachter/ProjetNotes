@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { fetchAllNotesFromLS, getNotesByCreatorId } from "../../services/notes";
+import { fetchAllNotesFromLS, getNotesByCreatorId,  migrateTagsInLocalStorage } from "../../services/notes";
 import { checkConnectionAndGetInfo } from "../../utils/decryptJwt";
 import { Link } from "react-router-dom";
+
 
 const HomepageComponent = () => {
   const [notes, setNotes] = useState([]);
@@ -22,8 +23,9 @@ const HomepageComponent = () => {
         setUserData(false);
       }
     };
-
-    fetchUserInfo();
+ 
+    fetchUserInfo(); 
+ 
   }, []);
 
   useEffect(() => {
@@ -52,14 +54,7 @@ const HomepageComponent = () => {
         <p>Loading...</p>
       </main>
     );
-  if (!userData)
-    return (
-      <main className="px-6 py-8">
-        <p className="text-center font-semibold text-2xl">
-          You are not logged in
-        </p>
-      </main>
-    );
+
   if (error) return <main className="px-6 py-8">{error}</main>;
 
   return (
@@ -76,9 +71,17 @@ const HomepageComponent = () => {
               </button>
             ))}
           </div>
+          {    !userData &&
+      <div className="px-6 py-8 block">
+        <p className="text-center font-semibold text-2xl">
+          You are not logged in
+        </p>
+      </div>
+    }
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
             {notes.map((note, index) => (
-              <div className="bg-[#1E272A]/50">
+              <div className="bg-[#1E272A]/50 block">
                 <Link key={index} to={`/note/${note._id}`}>
                   <div className=" border-stroke/20 border-[1px] bg-gradient-to-t bg-opacity-[13%] from-glass-100/[7%] from-[100%] via-[0%] via-glass-200/0 to-glass-300/[40%] to-[0%] rounded-md p-4 shadow-md relative overflow-hidden">
                     <h3 className="text-lg font-reggae-one font-medium text-isabelline/80 mb-2">

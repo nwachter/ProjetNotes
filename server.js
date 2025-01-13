@@ -34,9 +34,12 @@ mongoose.connect(URI).then(() => {
 const authRouter = require('./routes/authRoutes');
 const usersRouter = require('./routes/usersRoutes');
 const notesRouter = require('./routes/notesRoutes');
+const tagsRouter = require('./routes/tagsRoutes');
+const { updateNoteTags } = require('./controllers/tagsController');
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/notes', notesRouter);
+app.use('/api/v1/tags', tagsRouter);
 
 // Serve React static files
 app.use(express.static(path.join(__dirname, 'client/build')));
@@ -44,6 +47,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
+
 
 
 // app.use(express.static('public'));

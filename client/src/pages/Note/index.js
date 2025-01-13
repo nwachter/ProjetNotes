@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { checkConnectionAndGetInfo } from "../../utils/decryptJwt";
-import { createNote, createNoteInLS, getNoteById, deleteNote, updateNote } from "../../services/notes";
-import { useParams } from "react-router-dom";
+import { getNoteById, deleteNote, getNoteByIdFromLS } from "../../services/notes";
+import { Link, useParams } from "react-router-dom";
 import editIcon from "../../assets/icons/edit_icon.svg";
 import deleteIcon from "../../assets/icons/delete_icon.svg";
 
@@ -33,50 +33,55 @@ const NewNoteComponent = () => {
     }
   };
 
-  const handleUpdateNote = async (e) => {
-    e.preventDefault();
-    try {
-      if (!userData) {
-        console.error("No user data available for update.");
-        setError("You must be logged in to update a note.");
-        return;
-      }
-      await updateNote(noteId, note); // Pass the note ID and updated data to the update service
-      setError(null); // Reset errors
-      // Optional: Redirect or success notification
-    } catch (error) {
-      console.error("Error updating note:", error);
-      setError("Failed to update the note. Please try again.");
-    }
-  };
+  // const handleUpdateNote = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     if (!userData) {
+  //       console.error("No user data available for update.");
+  //       setError("You must be logged in to update a note.");
+  //       return;
+  //     }
+  //     await updateNote(noteId, note); // Pass the note ID and updated data to the update service
+  //     setError(null); // Reset errors
+  //     // Optional: Redirect or success notification
+  //   } catch (error) {
+  //     console.error("Error updating note:", error);
+  //     setError("Failed to update the note. Please try again.");
+  //   }
+  // };
   
-  useEffect(() => {
-    const fetchNoteById = async () => {
+  useEffect(() =>  {
+    const fetchNoteById =  async () => {
       let errorMessage = null;
       let fetchedNote = null;
-
       if (!noteId) {
         errorMessage = "Note ID is missing.";
-      } else if (!userData?.id) {
-        errorMessage = "User not logged in. Cannot fetch note.";
-      } else {
+      } 
+      else {
         try {
-          fetchedNote = await getNoteById(noteId);
+          if (!userData) {
+            fetchedNote = await getNoteByIdFromLS(noteId);
+            console.log("Fetched note from local storage:", fetchedNote);
+          } 
+          else if(userData?.id) {
+            fetchedNote = await getNoteById(noteId);
+            console.log("Fetched note from db:", fetchedNote);
+          } 
+          else {
+            errorMessage = "Unknown user data";
+          } 
+          
         } catch (err) {
           console.error("Error fetching note:", err);
           errorMessage = "Failed to fetch the note. Please try again.";
         }
       }
-
       setNote(fetchedNote);
       setError(errorMessage);
-      setLoading(false); // Always stop loading at the end
+      setLoading(false); 
     };
 
-    if (userData !== null) {
-      // Ensure userData has resolved before attempting to fetch
-      fetchNoteById();
-    }
+     fetchNoteById();
   }, [noteId, userData]);
   
 
@@ -121,9 +126,11 @@ const NewNoteComponent = () => {
                     {note.title}
                   </h3>
                   <div id="icons">
-                  <button onClick={handleUpdateNote} className="text-isabelline/90 hover:text-gray-300 transition">
+                    <Link to={`/update/${note._id}`} className="text-isabelline/90 hover:text-gray-300 transition">
+                  <button className="text-isabelline/90 hover:text-gray-300 transition">
                      <img src={editIcon} alt="edit" className="" />
                     </button>
+                    </Link>
                     <button onClick={handleDeleteNote} className="text-isabelline/90 hover:text-gray-300 transition">
                     <img src={deleteIcon} alt="delete" className="" />
 
