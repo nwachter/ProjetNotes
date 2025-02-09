@@ -1,0 +1,26 @@
+//fonts and colors
+
+    "persian-green": {
+          DEFAULT: '#2A9D8F',
+        },
+      "obsidian": {
+          DEFAULT: '#0B1215',
+        },
+        "arsenic": {
+          DEFAULT: '#11181C',
+        },
+        "saffron": {
+          DEFAULT: '#E9C46A',
+        },
+        "isabelline": {
+          DEFAULT: '#F5F1ED',
+        },
+        "carmine": {
+          DEFAULT: '#9A031E',
+        },
+        "stroke": {
+          DEFAULT: '#F5F1ED',
+        },
+    'roboto': ['Roboto', 'sans-serif'],
+   'lora': ['Lora', 'Calibri', 'Roboto', 'serif'],
+       'reggae-one': ['Reggae One', 'normal'],

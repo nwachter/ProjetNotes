@@ -178,5 +178,5 @@ module.exports = {
     getNoteById,
     createNote,
     deleteNote,
-    updateNote
+    updateNote,
 };

@@ -9,7 +9,8 @@ const { importUsers, importNotes } = require('./controllers/notesController');
 const { usersData } = require('./data/users');
 const { notesData } = require('./data/notes');
 
-const hostname = 'localhost';
+// const hostname = 'localhost';
+const hostname = '127.0.0.1'; //testerror
 const URI = process.env.MONGODB_URI;
 const PORT = Number(process.env.PORT || 4000);
 
@@ -18,7 +19,11 @@ app.use(express.json()); // Parse JSON requests
 app.use(express.urlencoded({ extended: true }));
 
 //Cors
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+    origin: 'http://127.0.0.1:3000', // testerror
+    credentials: true
+  }));
 
 //cookie parser
 app.use(cookieParser());
@@ -43,6 +48,11 @@ app.use('/api/v1/tags', tagsRouter);
 
 // Serve React static files
 app.use(express.static(path.join(__dirname, 'client/build')));
+
+
+app.get('/client/sw.js', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client/build', 'sw.js'));
+  }); //testerror
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { checkConnectionAndGetInfo } from "../../utils/decryptJwt";
 import { createNote, createNoteInLS } from "../../services/notes";
+import { migrateLocalStorageNotes } from "../../services/notes";
 
 const NewNoteComponent = () => {
   const [loading, setLoading] = useState(true);
@@ -32,17 +33,20 @@ const NewNoteComponent = () => {
       if (!userData) {
         if (formData.tags.length > 0)
           formData.tags = formData.tags.split(",").map((tag) => tag.trim());
+        console.log("Not connected, creating note in local storage:", formData);
 
         createdNote = await createNoteInLS(formData);
       } else {
         if (formData.tags.length > 0)
           formData.tags = formData.tags.split(",").map((tag) => tag.trim());
+        console.log("Connected, creating note in database:", formData);
         createdNote = await createNote({
           // creator_id: userData.id, //creator_id maintenant ajouté dans le back pour plus de sécurité
           image: "", //Attention, a completer!
           ...formData,
         });
       }
+      console.log("Created note:", createdNote);
 
       // Clear form after successful creation
       setFormData({ title: "", content: "" });
@@ -54,6 +58,22 @@ const NewNoteComponent = () => {
       setError("Failed to create note. Please try again.");
     }
   };
+
+  useEffect(() => {
+const migrateNotes = async () => {
+  try {
+    const result = await migrateLocalStorageNotes();
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+}
+    // const data = migrateNotes();
+    // console.log("Data migrate : ", data)
+  
+  }, [])
+  
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -86,61 +106,49 @@ const NewNoteComponent = () => {
       </main>
     );
 
-  return (
-    <div>
-      <main className="px-6 py-8">
-        <div className="flex justify-center gap-4 flex-wrap mb-8">
-          {["Personal", "Work", "Ideas", "Tasks"].map((value, index) => (
-            <button
-              key={index}
-              className="px-6 py-2 bg-teal-700 text-gray-100 rounded-full shadow hover:bg-teal-600 transition"
-            >
-              {value}
-            </button>
-          ))}
-        </div>
-        <div className="grid grid-cols-1 grid-rows-1 px-6 pb-6">
-          <div className="border-stroke/20 border-[1px] bg-gradient-to-t from-glass-100/[7%] from-[100%] via-[0%] via-glass-200/0 to-glass-300/[40%] to-[0%] rounded-md p-4 shadow-md relative overflow-hidden">
-            <form onSubmit={handleCreateNote}>
-              <input
-                name="title"
-                type="text"
-                value={formData.title}
-                onChange={handleInputChange}
-                placeholder="Note Title"
-                className="text-lg font-medium bg-black/5 text-isabelline/80 h-12 w-full mb-2 p-2 rounded border border-gray-700 focus:outline-none focus:border-teal-500"
-              />
-
-              <textarea
-                name="content"
-                value={formData.content}
-                onChange={handleInputChange}
-                placeholder="Write your note here..."
-                className="text-sm h-[40vh] w-full opacity-90 bg-black/5 text-isabelline/90 mb-4 p-2 rounded border border-gray-700 focus:outline-none focus:border-teal-500"
-              />
-
-              <input
-                name="tags"
-                type="text"
-                value={formData.tags}
-                onChange={handleInputChange}
-                placeholder="Tags"
-                className="text-lg font-medium bg-black/5 text-isabelline/80 h-12 w-full mb-2 p-2 rounded border border-gray-700 focus:outline-none focus:border-teal-500"
-              />
-
-              <button
-                type="submit"
-                className=" bg-teal-500 rounded-3xl text-white h-12 w-24 py-2 px-4 top-2 right-2 hover:text-teal-400 transition"
-                title="Create Note"
-              >
-                Créer
-              </button>
-            </form>
+    return (
+      <div className="min-h-screen  text-isabelline">
+        <main className="container mx-auto px-4 py-12">
+          <div className="max-w-3xl mx-auto">
+            <div className="old:bg-arsenic/30 bg-gradient-to-br from-glass-100/10 via-glass-100/5 to-arsenic/10 backdrop-blur-md rounded-lg p-8 shadow-xl">
+              <form onSubmit={handleCreateNote} className="space-y-6">
+                <input
+                  name="title"
+                  type="text"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  placeholder="Note Title"
+                  className="w-full px-0 py-2 bg-transparent text-2xl text-saffron placeholder-saffron/50 border-b border-stroke/20 focus:outline-none focus:border-saffron/50 transition duration-300 font-reggae-one"
+                />
+                <textarea
+                  name="content"
+                  value={formData.content}
+                  onChange={handleInputChange}
+                  placeholder="Write your note here..."
+                  className="w-full h-64 px-0 py-2 bg-transparent text-isabelline placeholder-isabelline/50 focus:outline-none font-lora resize-none"
+                />
+                <div className="flex items-center space-x-4">
+                  <input
+                    name="tags"
+                    type="text"
+                    value={formData.tags}
+                    onChange={handleInputChange}
+                    placeholder="Add tags..."
+                    className="flex-grow px-0 py-2 bg-transparent text-sm text-persian-green placeholder-persian-green/50 border-b border-stroke/20 focus:outline-none focus:border-persian-green/50 transition duration-300 font-roboto"
+                  />
+                  <button
+                    type="submit"
+                    className="px-6 py-2 bg-saffron/80 text-obsidian rounded-full shadow-md hover:bg-saffron transition-colors duration-300 font-roboto font-bold text-sm"
+                  >
+                    Save Note
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      </main>
-    </div>
-  );
+        </main>
+      </div>
+    )
 };
 
 export default NewNoteComponent;

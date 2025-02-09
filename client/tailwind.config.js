@@ -245,6 +245,7 @@ module.exports = {
         'brawler': ['Brawler', 'serif'],
         'bebas-neue': ['Bebas Neue', 'cursive'],
         'bentham': ['Bentham', 'serif'],
+        "funnel-sans": ['Funnel Sans', 'sans-serif']
 
       },
       spacing: {

@@ -89,7 +89,7 @@ const SigninModal = ({ login }) => {
       // }, 4000);
     } catch (error) {
       console.error("Error:", error);
-      alert("Server error, please try again later.");
+      window.alert("Server error, please try again later.");
     }
   };
 
