@@ -1,155 +1,200 @@
-import React, { useEffect, useState } from "react";
-import { checkConnectionAndGetInfo } from "../../utils/decryptJwt";
-import { getNoteById, deleteNote, getNoteByIdFromLS } from "../../services/notes";
-import { Link, useParams } from "react-router-dom";
-import editIcon from "../../assets/icons/edit_icon.svg";
-import deleteIcon from "../../assets/icons/delete_icon.svg";
+"use client"
 
-const NewNoteComponent = () => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [userData, setUserData] = useState({});
-  const [note, setNote] = useState({});
-  const noteId = useParams().id;
+import { useEffect, useState } from "react"
+import { checkConnectionAndGetInfo } from "../../utils/decryptJwt"
+import { getNoteById, deleteNote, getNoteByIdFromLS } from "../../services/notes"
+import { Link, useParams, useNavigate } from "react-router-dom"
+import editIcon from "../../assets/icons/edit_icon.svg"
+import deleteIcon from "../../assets/icons/delete_icon.svg"
 
+const NoteComponent = () => {
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [userData, setUserData] = useState({})
+  const [note, setNote] = useState({})
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const noteId = useParams().id
+  const navigate = useNavigate()
 
-
-  const handleDeleteNote = async (e) => {
-    e.preventDefault();
+  const handleDeleteNote = async () => {
     try {
       if (!userData) {
-        console.error("No user data available for deletion.");
-        setError("You must be logged in to delete a note.");
-        return;
+        console.error("No user data available for deletion.")
+        setError("You must be logged in to delete a note.")
+        return
       }
 
-      await deleteNote(noteId); // Pass the note ID to the deletion service
-      // setNote(null); // Clear the note after deletion
-      setError(null); // Reset errors
-      // Optional: Redirect or success notification
+      await deleteNote(noteId)
+      navigate("/")
     } catch (error) {
-      console.error("Error deleting note:", error);
-      setError("Failed to delete the note. Please try again.");
+      console.error("Error deleting note:", error)
+      setError("Failed to delete the note. Please try again.")
     }
-  };
+  }
 
-  // const handleUpdateNote = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     if (!userData) {
-  //       console.error("No user data available for update.");
-  //       setError("You must be logged in to update a note.");
-  //       return;
-  //     }
-  //     await updateNote(noteId, note); // Pass the note ID and updated data to the update service
-  //     setError(null); // Reset errors
-  //     // Optional: Redirect or success notification
-  //   } catch (error) {
-  //     console.error("Error updating note:", error);
-  //     setError("Failed to update the note. Please try again.");
-  //   }
-  // };
-  
-  useEffect(() =>  {
-    const fetchNoteById =  async () => {
-      let errorMessage = null;
-      let fetchedNote = null;
+  useEffect(() => {
+    const fetchNoteById = async () => {
+      let errorMessage = null
+      let fetchedNote = null
       if (!noteId) {
-        errorMessage = "Note ID is missing.";
-      } 
-      else {
+        errorMessage = "Note ID is missing."
+      } else {
         try {
           if (!userData) {
-            fetchedNote = await getNoteByIdFromLS(noteId);
-            console.log("Fetched note from local storage:", fetchedNote);
-          } 
-          else if(userData?.id) {
-            fetchedNote = await getNoteById(noteId);
-            console.log("Fetched note from db:", fetchedNote);
-          } 
-          else {
-            errorMessage = "Unknown user data";
-          } 
-          
+            fetchedNote = await getNoteByIdFromLS(noteId)
+            console.log("Fetched note from local storage:", fetchedNote)
+          } else if (userData?.id) {
+            fetchedNote = await getNoteById(noteId)
+            console.log("Fetched note from db:", fetchedNote)
+          } else {
+            errorMessage = "Unknown user data"
+          }
         } catch (err) {
-          console.error("Error fetching note:", err);
-          errorMessage = "Failed to fetch the note. Please try again.";
+          console.error("Error fetching note:", err)
+          errorMessage = "Failed to fetch the note. Please try again."
         }
       }
-      setNote(fetchedNote);
-      setError(errorMessage);
-      setLoading(false); 
-    };
+      setNote(fetchedNote)
+      setError(errorMessage)
+      setLoading(false)
+    }
 
-     fetchNoteById();
-  }, [noteId, userData]);
-  
+    fetchNoteById()
+  }, [noteId, userData])
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const data = await checkConnectionAndGetInfo();
-        const user = data.user;
-        console.log("USER : ", user);
-        setUserData(user);
+        const data = await checkConnectionAndGetInfo()
+        const user = data.user
+        console.log("USER : ", user)
+        setUserData(user)
       } catch (error) {
-        console.error("Error fetching user data:", error);
-        setUserData(false);
+        console.error("Error fetching user data:", error)
+        setUserData(false)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchUserInfo();
-  }, []);
+    fetchUserInfo()
+  }, [])
 
-  if (loading) return <main className="px-6 py-8"><div className="text-center">Loading...</div></main>;
-  if (error) return <main className="px-6 py-8"><div className="text-red-500">{error}</div></main>;
+  if (loading)
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-obsidian to-arsenic">
+        <div className="glass-background p-8 rounded-lg max-w-md">
+          <div className="text-center text-isabelline/90 text-xl font-lora">Loading...</div>
+        </div>
+      </div>
+    )
+
+  if (error)
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-obsidian to-arsenic">
+        <div className="glass-background p-8 rounded-lg max-w-md">
+          <div className="text-carmine text-xl font-lora">{error}</div>
+        </div>
+      </div>
+    )
 
   return (
-    <div>
-      <main className="px-6 py-8">
-        <div className="flex justify-center gap-4 flex-wrap mb-8">
+    <div className="min-h-screen py-12 px-4 bg-gradient-to-br from-obsidian to-arsenic">
+      <div className="max-w-3xl mx-auto">
+        <div className="mb-8 flex justify-center gap-4 flex-wrap">
           {["Personal", "Work", "Ideas", "Tasks"].map((value, index) => (
             <button
               key={index}
-              className="px-6 py-2 bg-teal-700 text-gray-100 rounded-full shadow hover:bg-teal-600 transition"
+              className="px-6 py-2 bg-persian-green/80 text-isabelline rounded-full shadow-lg hover:bg-persian-green transition-colors duration-300 font-roboto text-sm tracking-wide"
             >
               {value}
             </button>
           ))}
         </div>
-        <div className="grid grid-cols-1 grid-rows-1 px-6 pb-6">
-          <div className="border-stroke/20 p-4 border-[1px] bg-gradient-to-t from-glass-100/[7%] from-[100%] via-[0%] via-glass-200/0 to-glass-300/[40%] to-[0%] rounded-md p-4 shadow-md relative overflow-hidden">
-          <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-reggae-one font-medium text-isabelline/80 mb-2">
-                    {note.title}
-                  </h3>
-                  <div id="icons">
-                    <Link to={`/update/${note._id}`} className="text-isabelline/90 hover:text-gray-300 transition">
-                  <button className="text-isabelline/90 hover:text-gray-300 transition">
-                     <img src={editIcon} alt="edit" className="" />
-                    </button>
-                    </Link>
-                    <button onClick={handleDeleteNote} className="text-isabelline/90 hover:text-gray-300 transition">
-                    <img src={deleteIcon} alt="delete" className="" />
 
-                    </button>
-                  </div>
-            </div> 
-      
+        <div className="glass-background p-8 rounded-lg shadow-xl">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-reggae-one text-saffron">{note.title}</h2>
+            <div className="flex items-center space-x-3">
+              <Link
+                to={`/update/${note._id}`}
+                className="p-2 bg-arsenic/50 rounded-full hover:bg-arsenic/80 transition-colors duration-300"
+                title="Edit Note"
+              >
+                <img src={editIcon || "/placeholder.svg"} alt="Edit" className="w-5 h-5" />
+              </Link>
+              <button
+                onClick={() => setShowDeleteConfirm(true)}
+                className="p-2 bg-arsenic/50 rounded-full hover:bg-carmine/30 transition-colors duration-300"
+                title="Delete Note"
+              >
+                <img src={deleteIcon || "/placeholder.svg"} alt="Delete" className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
 
-                  <p className="text-sm font-lora opacity-90 text-isabelline/90 mb-4">
-                    {note.content}
-                  </p>
-                  <button className="absolute top-2 right-2 text-isabelline/90 hover:text-gray-300 transition">
-                    ⋮
-                  </button>
+          {note.tags && note.tags.length > 0 && (
+            <div className="mb-4 flex flex-wrap gap-2">
+              {Array.isArray(note.tags) ? (
+                note.tags.map((tag, index) => (
+                  <span key={index} className="px-3 py-1 bg-saffron/20 text-saffron text-xs rounded-full font-roboto">
+                    {tag}
+                  </span>
+                ))
+              ) : (
+                <span className="px-3 py-1 bg-saffron/20 text-saffron text-xs rounded-full font-roboto">
+                  {note.tags}
+                </span>
+              )}
+            </div>
+          )}
+
+          <div className="mt-6">
+            <p className="text-isabelline/90 font-lora whitespace-pre-wrap leading-relaxed">{note.content}</p>
+          </div>
+
+          <div className="mt-8 pt-4 border-t border-stroke/10 flex justify-between items-center">
+            <div className="text-xs text-isabelline/60 font-roboto">
+              {note.createdAt && <span>Created: {new Date(note.createdAt).toLocaleDateString()}</span>}
+            </div>
+            <button
+              onClick={() => navigate("/")}
+              className="px-4 py-2 bg-arsenic/50 text-isabelline/80 rounded-full text-sm hover:bg-arsenic/80 transition-colors duration-300 font-roboto"
+            >
+              Back to Notes
+            </button>
           </div>
         </div>
-      </main>
-    </div>
-  );
-};
+      </div>
 
-export default NewNoteComponent;
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="glass-background p-8 rounded-lg max-w-md w-full">
+            <h3 className="text-xl font-reggae-one text-carmine mb-4">Delete Note</h3>
+            <p className="text-isabelline/90 font-lora mb-6">
+              Are you sure you want to delete this note? This action cannot be undone.
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="px-4 py-2 bg-arsenic/80 text-isabelline rounded-full hover:bg-arsenic transition-colors duration-300 font-roboto"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteNote}
+                className="px-4 py-2 bg-carmine/80 text-isabelline rounded-full hover:bg-carmine transition-colors duration-300 font-roboto"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default NoteComponent
+

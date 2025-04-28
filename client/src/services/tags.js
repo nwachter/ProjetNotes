@@ -8,15 +8,15 @@ const api = axios.create({
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     },
-    withCredentials: true 
+    withCredentials: true
 });
 
-const getAllTags = () => {
-    try  {
-        const tags = api.get('/tags');
+const getAllTags = async () => {
+    try {
+        const response = await api.get('/tags');
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         console.error('Failed to fetch tags:', error);
         throw error;
     }
@@ -32,12 +32,12 @@ const getAllTagsFromLS = () => {
     }
 }
 
-const getTagById = (id) => {
+const getTagById = async (id) => {
     try {
-        const tag = api.get(`/tags/${id}`);
+        const response = await api.get(`/tags/${id}`);
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         console.error(`Failed to fetch tag #${id} :`, error);
         throw error;
 
@@ -54,12 +54,12 @@ const getTagByIdFromLS = (id) => {
     }
 }
 
-const createTag = (data) => {
+const createTag = async (data) => {
     try {
-        const tag = api.post('/tags', data);
+        const response = await api.post('/tags', data);
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         console.error('Failed to create tag:', error);
         throw error;
     }
@@ -77,12 +77,12 @@ const createTagInLS = (data) => {
     }
 }
 
-const updateTag = (id, data) => {
+const updateTag = async (id, data) => {
     try {
-        const tag = api.patch(`/tags/${id}`, data);
+        const response = await api.patch(`/tags/${id}`, data);
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         console.error('Failed to update tag:', error);
         throw error;
     }
@@ -104,12 +104,12 @@ const updateTagInLS = (id, data) => {
     }
 }
 
-const deleteTag = (id) => {
+const deleteTag = async (id) => {
     try {
-        const tag = api.delete(`/tags/${id}`);
+        const response = await api.delete(`/tags/${id}`);
         return response.data;
     }
-    catch(error) {
+    catch (error) {
         console.error('Failed to delete tag:', error);
         throw error;
     }

@@ -8,6 +8,8 @@ import { checkConnectionAndGetInfo } from "../../utils/decryptJwt";
 
 const Header = ({ logout, toggleSignInModal, toggleSignUpModal }) => {
   const [userData, setUserData] = useState(null); // Initialize as null
+  const [menuOpen, setMenuOpen] = useState(false);
+
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -43,10 +45,12 @@ const Header = ({ logout, toggleSignInModal, toggleSignUpModal }) => {
         backgroundPosition: "center",
       }}
     >
-      <div className="absolute inset-0 bg-obsidian/30 backdrop-blur-sm"></div>
+      <div className="absolute inset-0 bg-obsidian/30 backdrop-blur-sm rounded-3xl"></div>
       <div className="relative z-10 flex items-center justify-between">
         <div className="flex items-center space-x-8">
-          <img src={logo || "/placeholder.svg"} alt="Logo" className="w-[174px] h-[81px]" />
+          <Link to="/">
+            <img src={logo || "/placeholder.svg"} alt="Glass Notes" className="w-[174px] h-[81px]" />
+          </Link>
           <nav className="hidden md:flex space-x-6">
             <Link to="/" className="text-isabelline hover:text-saffron transition-colors duration-200 font-roboto">
               Notes
@@ -64,7 +68,30 @@ const Header = ({ logout, toggleSignInModal, toggleSignUpModal }) => {
             </Link>
           </nav>
         </div>
-        <div className="flex items-center space-x-4">
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden p-2 text-isabelline hover:text-saffron transition-colors"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d={menuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+            />
+          </svg>
+        </button>
+
+        {/* Desktop Auth Buttons */}
+        <div className="hidden md:flex items-center space-x-4">
           {userData === false || !userData?.username ? (
             <>
               <button
@@ -81,15 +108,81 @@ const Header = ({ logout, toggleSignInModal, toggleSignUpModal }) => {
               </button>
             </>
           ) : (
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 bg-carmine/20 hover:bg-carmine/30 text-isabelline rounded-full transition-colors duration-200 font-roboto"
-            >
-              Déconnexion {userData?.username}
-            </button>
+            <div className="flex items-center space-x-4">
+              <span className="text-isabelline/80 font-roboto">{userData?.username}</span>
+              <button
+                onClick={handleLogout}
+                className="px-4 py-2 bg-carmine/20 hover:bg-carmine/30 text-isabelline rounded-full transition-colors duration-200 font-roboto"
+              >
+                Déconnexion
+              </button>
+            </div>
           )}
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="md:hidden absolute top-full left-0 right-0 mt-2 p-4 bg-obsidian/90 backdrop-blur-md rounded-lg z-20 shadow-lg">
+          <nav className="flex flex-col space-y-4 mb-4">
+            <Link
+              to="/"
+              className="text-isabelline hover:text-saffron transition-colors duration-200 font-roboto py-2"
+              onClick={() => setMenuOpen(false)}
+            >
+              Notes
+            </Link>
+            <Link
+              to="/new"
+              className="flex items-center space-x-2 text-isabelline hover:text-saffron transition-colors duration-200 font-roboto py-2"
+              onClick={() => setMenuOpen(false)}
+            >
+              <img
+                src={newIcon || "/placeholder.svg"}
+                alt="New note icon"
+                className="w-6 h-6 filter brightness-0 invert"
+              />
+              <span>New Note</span>
+            </Link>
+          </nav>
+
+          <div className="border-t border-stroke/10 pt-4">
+            {userData === false || !userData?.username ? (
+              <div className="flex flex-col space-y-3">
+                <button
+                  onClick={() => {
+                    toggleSignInModal()
+                    setMenuOpen(false)
+                  }}
+                  className="w-full py-2 text-isabelline hover:text-saffron transition-colors duration-200 font-roboto"
+                >
+                  Connexion
+                </button>
+                <button
+                  onClick={() => {
+                    toggleSignUpModal()
+                    setMenuOpen(false)
+                  }}
+                  className="w-full py-2 bg-saffron/20 hover:bg-saffron/30 text-isabelline rounded-full transition-colors duration-200 font-roboto"
+                >
+                  Inscription
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col space-y-3">
+                <span className="text-isabelline/80 font-roboto py-2">{userData?.username}</span>
+                <button
+                  onClick={handleLogout}
+                  className="w-full py-2 bg-carmine/20 hover:bg-carmine/30 text-isabelline rounded-full transition-colors duration-200 font-roboto"
+                >
+                  Déconnexion
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="relative z-10 mt-4">
         <blockquote className="text-saffron font-lora italic text-center text-sm">
           "The discipline of writing something down is the first step toward making it happen." – Lee Iacocca

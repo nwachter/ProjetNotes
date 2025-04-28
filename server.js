@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({
     origin: 'http://127.0.0.1:3000', // testerror
     credentials: true
-  }));
+}));
 
 //cookie parser
 app.use(cookieParser());
@@ -40,7 +40,7 @@ const authRouter = require('./routes/authRoutes');
 const usersRouter = require('./routes/usersRoutes');
 const notesRouter = require('./routes/notesRoutes');
 const tagsRouter = require('./routes/tagsRoutes');
-const { updateNoteTags } = require('./controllers/tagsController');
+// const { updateNoteTags } = require('./controllers/tagsController');
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/notes', notesRouter);
@@ -52,7 +52,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.get('/client/sw.js', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client/build', 'sw.js'));
-  }); //testerror
+}); //testerror
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
