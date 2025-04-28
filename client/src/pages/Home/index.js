@@ -171,20 +171,32 @@ const HomepageComponent = () => {
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex justify-center gap-3 flex-wrap mb-12">
-          {[...allTags].map((tag, index) => (
-            <button
-              key={index}
-              className={`px-5 py-2 rounded-full shadow-lg transition-colors duration-300 font-roboto text-sm tracking-wide ${activeFilter === tag.name
-                ? "bg-persian-green text-isabelline"
-                : "bg-persian-green/40 text-isabelline/80 hover:bg-persian-green/60"
-                }`}
-              onClick={() => setActiveFilter(tag.name)}
-            >
-              {tag.name}
-            </button>
-          ))}
+        <div className="h-16 overflow-x-scroll custom-scrollbar overflow-y-hidden"
+        // onWheel={(e) => {
+        //   // Enable horizontal scrolling with mouse wheel
+        //   if (e.deltaY !== 0) {
+        //     e.preventDefault();
+        //     e.currentTarget.scrollLeft += e.deltaY;
+        //   }
+        // }}
+        >
+          <div className="flex gap-3 items-center  flex-nowrap mb-12"
+          >
+            {[...allTags].map((tag, index) => (
+              <button
+                key={index}
+                className={`px-5 py-2 rounded-full shadow-lg transition-colors duration-300 font-roboto text-sm tracking-wide ${activeFilter === tag.name
+                  ? "bg-persian-green text-isabelline"
+                  : "bg-persian-green/40 text-isabelline/80 hover:bg-persian-green/60"
+                  }`}
+                onClick={() => setActiveFilter(tag.name)}
+              >
+                {tag.name}
+              </button>
+            ))}
+          </div>
         </div>
+
 
         {!userData && (
           <div className="mb-12 p-8 glass-background rounded-lg shadow-xl text-center">

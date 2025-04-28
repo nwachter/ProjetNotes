@@ -114,12 +114,13 @@ const SigninModal = ({ login }) => {
           <img src={glassDonut || "/placeholder.svg"} alt="Glass Donut" className="h-72 w-72" />
         </div>
 
-        <h2 className="text-4xl font-bold font-reggae-one text-center my-6 text-saffron">Connectez-vous</h2>
+        <h2 className="text-3xl font-bold font-reggae-one text-center my-6 text-saffron/90">Connectez-vous</h2>
+        {/* Separator */}
         <div
           className={`
         w-full 
         h-px 
-        my-6
+        mt-6 mb-8
         bg-gradient-to-r 
         from-transparent 
         via-persian-green/30 
@@ -149,6 +150,7 @@ const SigninModal = ({ login }) => {
                 type="text"
                 onChange={handleChangeUsername}
                 placeholder="Votre pseudo"
+                autoComplete="off"
                 name="username"
                 id="username"
                 className="w-full py-3 pr-3 pl-12 bg-arsenic/50 font-roboto text-isabelline border border-stroke/20 rounded-lg focus:outline-none focus:border-persian-green/50 transition duration-300"
@@ -171,8 +173,9 @@ const SigninModal = ({ login }) => {
                 onChange={handleChangePassword}
                 name="password"
                 id="password"
+                autoComplete="off"
                 placeholder="Votre mot de passe"
-                className="w-full py-3 pr-3 pl-12 bg-arsenic/50 font-roboto text-isabelline border border-stroke/20 rounded-lg focus:outline-none focus:border-persian-green/50 transition duration-300"
+                className="w-full py-3 pr-3 pl-12 custom-autofill autofill:bg-black bg-arsenic/50 font-roboto text-isabelline border border-stroke/20 rounded-lg focus:outline-none focus:border-persian-green/50 transition duration-300"
               />
               <LockKeyhole className="absolute left-3 top-1/2 transform -translate-y-1/2 text-mint/20" />
 
@@ -184,7 +187,7 @@ const SigninModal = ({ login }) => {
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full py-3 bg-persian-green text-isabelline rounded-lg hover:bg-persian-green/80 transition-colors duration-300 font-roboto ${isLoading ? "opacity-70 cursor-not-allowed" : ""
+            className={`w-full py-3 mt-8 bg-persian-green text-isabelline rounded-lg hover:bg-persian-green/80 transition-colors duration-300 font-roboto ${isLoading ? "opacity-70 cursor-not-allowed" : ""
               }`}
           >
             {isLoading ? "Connexion en cours..." : "Connexion"}
