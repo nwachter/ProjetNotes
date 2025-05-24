@@ -2,16 +2,6 @@ import { api } from "../config/config"
 
 // import { ObjectId } from 'bson';
 
-
-const api = axios.create({
-    baseURL: '/api/v1',
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    },
-    withCredentials: true
-});
-
 const getAllTags = async () => {
     try {
         const response = await api.get('/tags');
