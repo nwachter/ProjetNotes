@@ -10,7 +10,7 @@ const { usersData } = require('./data/users');
 const { notesData } = require('./data/notes');
 
 // const hostname = 'localhost';
-const hostname = '127.0.0.1'; //testerror
+// const hostname = '127.0.0.1'; 
 const URI = process.env.MONGODB_URI;
 const PORT = Number(process.env.PORT || 4000);
 
@@ -20,8 +20,27 @@ app.use(express.urlencoded({ extended: true }));
 
 //Cors
 // app.use(cors());
+// app.use(cors({
+//     origin: 'http://127.0.0.1:3000', 
+//     credentials: true
+// }));
+// CORS pour production
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://glass-notes-ten.vercel.app/',
+    'https://glass-notes-git-main-nwachters-projects.vercel.app/',
+    'https://glass-notes-rfyd6fm20-nwachters-projects.vercel.app/'
+];
+
 app.use(cors({
-    origin: 'http://127.0.0.1:3000', // testerror
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
 
@@ -64,5 +83,7 @@ app.get('*', (req, res) => {
 
 
 app.listen(PORT, hostname, () => {
-    console.log(`Le serveur est démarré sur http://${hostname}:${PORT}`);
+    // console.log(`Le serveur est démarré sur http://${hostname}:${PORT}`);
+    console.log(`Le serveur est démarré sur le port ${PORT}`);
+
 });
