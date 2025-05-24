@@ -2,23 +2,34 @@
   "name": "projetnotes",
   "version": "1.0.0",
   "description": "Projet d'application de notes (FdN)",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "build:css": "tailwindcss -i ./public/css/input.css -o ./public/css/output.css"
+    "start": "nodemon server.js",
+    "build:css": "tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch",
+    "dev": "concurrently \"npm start --prefix client\" \"nodemon server.js\""
   },
   "keywords": [
     "notes",
     "note",
-    "projet"
+    "projet",
+    "glass notes"
   ],
   "author": "Nina Wachter",
   "license": "MIT",
   "dependencies": {
     "axios": "^1.7.7",
+    "bcrypt": "^5.1.1",
+    "bson-objectid": "^2.0.4",
+    "concurrently": "^9.1.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.21.1",
+    "http-status-codes": "^2.3.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.12.0",
+    "mongoose": "^8.9.1",
     "nodemon": "^3.1.7"
   },
   "devDependencies": {
