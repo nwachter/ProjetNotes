@@ -6,9 +6,7 @@
   "scripts": {
     "start": "nodemon server.js",
     "build:css": "tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch",
-    "dev": "concurrently \"npm start --prefix client\" \"nodemon server.js\"",
-    "build": "npm run build --prefix client"
-
+    "dev": "concurrently \"npm start --prefix client\" \"nodemon server.js\""
   },
   "keywords": [
     "notes",
