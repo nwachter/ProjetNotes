@@ -328,7 +328,7 @@ const HomepageComponent = () => {
                               note.tags.slice(0, 3).map((tag, index) => (
                                 <span
                                   key={index}
-                                  className="px-2 py-0.5 bg-saffron/20 text-saffron text-xs rounded-full font-roboto"
+                                  className=" px-2 py-0.5 bg-saffron/20 text-saffron text-xs rounded-full font-roboto"
                                 >
                                   {typeof tag === 'object' && tag.name ? tag.name : (typeof tag === 'string' ? getTagNameById(tag) : 'Unknown')}
                                 </span>
