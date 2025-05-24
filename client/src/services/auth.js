@@ -1,15 +1,4 @@
-import axios from 'axios';
-
-
-
-const api = axios.create({
-    baseURL: '/api/v1/auth',
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    },
-    withCredentials: true  //Ajouter après url des get si besoin a la place
-});
+import { api } from "../config/config"
 
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');

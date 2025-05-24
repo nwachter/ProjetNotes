@@ -1,5 +1,6 @@
-import axios from 'axios';
-import { ObjectId } from 'bson';
+import { api } from "../config/config"
+
+// import { ObjectId } from 'bson';
 
 
 const api = axios.create({
