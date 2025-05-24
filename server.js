@@ -28,9 +28,9 @@ app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://glass-notes-ten.vercel.app/',
-    'https://glass-notes-git-main-nwachters-projects.vercel.app/',
-    'https://glass-notes-16mkl2nxz-nwachters-projects.vercel.app/'
+    'https://glass-notes-ten.vercel.app',
+    'https://glass-notes-git-main-nwachters-projects.vercel.app',
+    'https://glass-notes-16mkl2nxz-nwachters-projects.vercel.app'
 ];
 
 app.use(cors({
