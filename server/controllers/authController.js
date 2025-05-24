@@ -90,7 +90,7 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     const MONGODB_URI = process.env.MONGODB_URI;
     const { username, password } = req.body;
-    console.log("Login req.body : ", req.body)
+    //console.log("Login req.body : ", req.body)
     try {
         if (!username || !password) {
             return res.status(400).json({

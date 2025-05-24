@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { fetchAllNotesFromLS, getNotesByCreatorId, updateNote, updateNoteInLS } from "../../services/notes"
 import { getAllTags } from "../../services/tags"
 import { checkConnectionAndGetInfo } from "../../utils/decryptJwt"
@@ -20,19 +20,16 @@ const HomepageComponent = () => {
   const [searchTerm, setSearchTerm] = useState("")
   const [formData, setFormData] = useState({ favorite: false })
 
-  const allTags = [{ name: "Toutes", _id: "Toutes" }, { name: "Favorites", _id: "Favorites" }, { name: "Récentes", _id: "Récentes" }, ...tags] ?? [];
 
-  const getTagNameById = (id) => {
-    const tag = allTags.find((tag) => tag._id === id)
-    return tag?.name
-  }
+
+
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
         const data = await checkConnectionAndGetInfo()
         const user = data.user
-        console.log("USER : ", user)
+        //console.log("USER : ", user)
         setUserData(user)
       } catch (error) {
         console.error("Error fetching user data:", error)
@@ -82,8 +79,9 @@ const HomepageComponent = () => {
         let data
         // data = await getAllTags();
         console.log("getTags : ", data);
-        data = notes.map(note => (note.tags));
-        setTags(data)
+        const tags = notes?.filter((note) => { return (note.tags && note.tags.length > 0) });
+        const uniqueTags = [...new Set(tags.flatMap(note => note.tags))];
+        setTags(uniqueTags)
 
       } catch (err) {
         setTags([])
@@ -93,8 +91,8 @@ const HomepageComponent = () => {
     }
 
     getNotes()
-    getTags()
-  }, [userData])
+    getTags(notes)
+  }, [userData, notes])
 
   //Favorite toggle handlers
   const handleFavoriteToggle = async (noteId) => {
@@ -128,6 +126,18 @@ const HomepageComponent = () => {
       console.log("Erreur lors de la mise à jour (favori) de la note : ", err)
     }
   }
+
+  const getTagNameById = (id) => {
+    const tag = allTags.find((tag) => tag._id === id)
+    return tag?.name
+  }
+
+  const allTags = useMemo(() => {
+    return [{ name: "Toutes", _id: "Toutes" }, { name: "Favorites", _id: "Favorites" }, { name: "Récentes", _id: "Récentes" }
+      , ...tags
+    ] ?? [];
+  }, [tags])
+
 
   const handleDragStop = (e, ui, noteId) => {
     const newPositions = {
@@ -171,6 +181,8 @@ const HomepageComponent = () => {
       }
     }
 
+
+
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase()
       return (
@@ -182,6 +194,8 @@ const HomepageComponent = () => {
 
     return true
   })
+
+
 
   if (loading)
     return (
@@ -270,7 +284,7 @@ const HomepageComponent = () => {
                 bounds="parent"
                 handle=".drag-handle"
               >
-                <div className="cursor-move relative">
+                <div className="relative">
                   <div className="h-full bg-arsenic/30 backdrop-blur-lg border relative border-stroke/10 rounded-lg shadow-xl px-6 pt-10 pb-8 transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:bg-arsenic/40 group">
                     <div className="absolute inset-0 bg-gradient-to-br from-persian-green/10 via-teal-200/10 to-obsidian/10 opacity-50"></div>
                     {/* Favorite toggle with drag handle icon */}

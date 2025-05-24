@@ -49,7 +49,7 @@ const NewNoteComponent = () => {
       }
 
       if (!userData) {
-        // console.log("Not connected, creating note in local storage:", noteData)
+        // //console.log("Not connected, creating note in local storage:", noteData)
         // createdNote = await createNoteInLS(noteData)
         setError("Vous devez être connecté pour créer une note.")
         setTimeout(() => {
@@ -57,14 +57,14 @@ const NewNoteComponent = () => {
         }, 1500)
         return false;
       } else {
-        console.log("Connected, creating note in database:", noteData)
+        //console.log("Connected, creating note in database:", noteData)
         createdNote = await createNote({
           image: "", //Attention, a completer!
           ...noteData,
         })
       }
 
-      console.log("Created note:", createdNote)
+      //console.log("Created note:", createdNote)
 
       // Clear form and show success message
       setFormData({ title: "", content: "", tags: "", favorite: false })
@@ -86,7 +86,7 @@ const NewNoteComponent = () => {
       try {
         const data = await checkConnectionAndGetInfo()
         const user = data.user
-        console.log("USER : ", user)
+        //console.log("USER : ", user)
         setUserData(user)
       } catch (error) {
         console.error("Error fetching user data:", error)

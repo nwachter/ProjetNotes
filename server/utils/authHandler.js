@@ -3,7 +3,7 @@ const path = require('path');
 
 const USERS_FILE = path.join(__dirname, '../data/users.json');
 
-console.log("Path to users JSON file: ", USERS_FILE);
+//console.log("Path to users JSON file: ", USERS_FILE);
 
 const readUsers = () => {
     try {

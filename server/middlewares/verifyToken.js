@@ -8,7 +8,7 @@ const verifyToken = async (req, res, next) => {
     try {
         //EXTRACT TOKEN FROM COOKIE
         const token = req.cookies.token;
-        console.log("Cookie", req.cookie, req.cookies);
+        //console.log("Cookie", req.cookie, req.cookies);
 
 
         //CHECK IF TOKEN EXISTS

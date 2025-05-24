@@ -95,7 +95,7 @@ const SignupComponent = () => {
     }, 4000);
 
 
-    console.log("Register info : ", data);
+    //console.log("Register info : ", data);
   }
   return null
   // return (

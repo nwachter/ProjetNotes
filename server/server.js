@@ -9,10 +9,13 @@ const { importUsers, importNotes } = require('./controllers/notesController');
 const { usersData } = require('./data/users');
 const { notesData } = require('./data/notes');
 
-// const hostname = 'localhost';
 // const hostname = '127.0.0.1'; 
 const URI = process.env.MONGODB_URI;
 const PORT = Number(process.env.PORT || 4000);
+const NODE_ENV = process.env.NODE_ENV || 'dev';
+
+const hostname = NODE_ENV === 'dev' ? 'localhost' : 'glass-notes-server.vercel.app';
+
 
 const app = express();
 app.use(express.json()); // Parse JSON requests
@@ -74,15 +77,15 @@ app.use('/api/v1/notes', notesRouter);
 app.use('/api/v1/tags', tagsRouter);
 
 // Serve React static files
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 
 app.get('/client/sw.js', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client/build', 'sw.js'));
+    res.sendFile(path.resolve(__dirname, '../client/build', 'sw.js'));
 }); //testerror
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
 
@@ -91,7 +94,7 @@ app.get('*', (req, res) => {
 
 
 app.listen(PORT, hostname, () => {
-    // console.log(`Le serveur est démarré sur http://${hostname}:${PORT}`);
-    console.log(`Le serveur est démarré sur le port ${PORT}`);
+    console.log(`Le serveur est démarré sur http://${hostname}${NODE_ENV === 'prod' ? "" : ":" + PORT}`);
+    // console.log(`Le serveur est démarré sur le port ${PORT}`);
 
 });

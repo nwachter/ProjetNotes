@@ -1,5 +1,5 @@
 const isAdmin = (req, res, next) => {
-    console.log("IsAdmin req.user, req.id, req.isAdmin : ", req.user);
+    //console.log("IsAdmin req.user, req.id, req.isAdmin : ", req.user);
     if (!req.user) {
         return res.status(401).json({ message: "Authentication required" });
     }
