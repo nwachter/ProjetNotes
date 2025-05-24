@@ -1,5 +1,5 @@
 import axios from "axios";
-import ObjectId from "bson-objectid";
+// import ObjectId from "bson-objectid";
 const api = axios.create({
   baseURL: "/api/v1",
   headers: {
@@ -171,7 +171,6 @@ export const createNote = async (data) => {
     // Create the note with ObjectId references
     const noteData = {
       ...data,
-      _id: ObjectId(),
       tags: allTagIds,
       favorite: data.favorite || false,
     };
@@ -319,26 +318,26 @@ export const getNoteByIdFromLS = (id) => {
  * @param {string} noteData.image - Image data URL or path
  * @returns {Object} Created note with generated ID
  */
-export const createNoteInLS = ({ title, content, tags = [], image = '' }) => {
-  try {
-    const notes = fetchAllNotesFromLS();
-    const newNote = {
-      _id: new ObjectId().toHexString(),
-      title,
-      content,
-      tags,
-      image,
-      createdAt: new Date().toISOString()
-    };
+// export const createNoteInLS = ({ title, content, tags = [], image = '' }) => {
+//   try {
+//     const notes = fetchAllNotesFromLS();
+//     const newNote = {
+//       _id: new ObjectId().toHexString(),
+//       title,
+//       content,
+//       tags,
+//       image,
+//       createdAt: new Date().toISOString()
+//     };
 
-    notes.push(newNote);
-    localStorage.setItem('notes', JSON.stringify(notes));
-    return newNote;
-  } catch (error) {
-    console.error('Error creating note:', error);
-    throw error;
-  }
-}
+//     notes.push(newNote);
+//     localStorage.setItem('notes', JSON.stringify(notes));
+//     return newNote;
+//   } catch (error) {
+//     console.error('Error creating note:', error);
+//     throw error;
+//   }
+// }
 
 /**
  * Update an existing note
@@ -533,64 +532,64 @@ export const clearAllNotesFromLS = () => {
 // };
 
 
-export const migrateLocalStorageNotes = async () => {
-  try {
-    // Get notes from localStorage
-    const localNotes = JSON.parse(localStorage.getItem('notes') || '[]');
+// export const migrateLocalStorageNotes = async () => {
+//   try {
+//     // Get notes from localStorage
+//     const localNotes = JSON.parse(localStorage.getItem('notes') || '[]');
 
-    if (localNotes.length === 0) {
-      return { success: true, message: 'No notes to migrate' };
-    }
+//     if (localNotes.length === 0) {
+//       return { success: true, message: 'No notes to migrate' };
+//     }
 
-    // Get all existing tags from database
-    const existingTagsResponse = await api.get('/tags');
-    const existingDbTags = existingTagsResponse.data;
+//     // Get all existing tags from database
+//     const existingTagsResponse = await api.get('/tags');
+//     const existingDbTags = existingTagsResponse.data;
 
-    // Create a map of tag names to their ObjectIds
-    const tagNameToId = new Map(
-      existingDbTags.map(tag => [tag.name, tag._id])
-    );
+//     // Create a map of tag names to their ObjectIds
+//     const tagNameToId = new Map(
+//       existingDbTags.map(tag => [tag.name, tag._id])
+//     );
 
-    // Collect all unique tag names from local notes
-    const uniqueLocalTagNames = new Set(
-      localNotes.flatMap(note => note.tags)
-    );
+//     // Collect all unique tag names from local notes
+//     const uniqueLocalTagNames = new Set(
+//       localNotes.flatMap(note => note.tags)
+//     );
 
-    // Create new tags that don't exist in the database
-    const newTagPromises = Array.from(uniqueLocalTagNames)
-      .filter(tagName => !tagNameToId.has(tagName))
-      .map(async tagName => {
-        const newTag = { _id: new ObjectId().toHexString(), name: tagName };
-        const response = await api.post('/tags', newTag);
-        tagNameToId.set(tagName, response.data._id);
-        return response.data;
-      });
+//     // Create new tags that don't exist in the database
+//     const newTagPromises = Array.from(uniqueLocalTagNames)
+//       .filter(tagName => !tagNameToId.has(tagName))
+//       .map(async tagName => {
+//         const newTag = { _id: new ObjectId().toHexString(), name: tagName };
+//         const response = await api.post('/tags', newTag);
+//         tagNameToId.set(tagName, response.data._id);
+//         return response.data;
+//       });
 
-    await Promise.all(newTagPromises);
+//     await Promise.all(newTagPromises);
 
-    // Transform local notes to match database schema
-    const transformedNotes = localNotes.map(note => ({
-      _id: new ObjectId().toHexString(),
-      title: note.title,
-      content: note.content,
-      image: note.image,
-      tags: note.tags.map(tagName => tagNameToId.get(tagName))
-    }));
+//     // Transform local notes to match database schema
+//     const transformedNotes = localNotes.map(note => ({
+//       _id: new ObjectId().toHexString(),
+//       title: note.title,
+//       content: note.content,
+//       image: note.image,
+//       tags: note.tags.map(tagName => tagNameToId.get(tagName))
+//     }));
 
-    // Post all notes to database
-    const notePromises = await Promise.all(transformedNotes.map(note =>
-      api.post('/notes', note)
-    ));
+//     // Post all notes to database
+//     const notePromises = await Promise.all(transformedNotes.map(note =>
+//       api.post('/notes', note)
+//     ));
 
-    // await Promise.all(notePromises);
+//     // await Promise.all(notePromises);
 
-    // Clear localStorage only after successful migration
-    localStorage.removeItem('notes');
+//     // Clear localStorage only after successful migration
+//     localStorage.removeItem('notes');
 
-    return notePromises;
+//     return notePromises;
 
-  } catch (error) {
-    console.error('Migration failed:', error);
-    throw error;
-  }
-}
+//   } catch (error) {
+//     console.error('Migration failed:', error);
+//     throw error;
+//   }
+// }
