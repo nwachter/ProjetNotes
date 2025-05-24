@@ -44,17 +44,22 @@ const HomepageComponent = () => {
     const getNotes = async () => {
       try {
         let data
-        if (!userData?.id) {
-          data = await fetchAllNotesFromLS()
-        } else {
+        if (userData?.id) {
           data = await getNotesByCreatorId(userData?.id)
-        }
+
+        } else data = [];
+        // else {
+        //             data = await fetchAllNotesFromLS()
+
+        // }
         setNotes(data)
         // Initialize positions from localStorage or set to empty object
         const savedPositions = JSON.parse(localStorage.getItem("notePositions")) || {}
         setPositions(savedPositions)
+
       } catch (err) {
         setError("Failed to fetch notes.")
+
       } finally {
         setLoading(false)
       }
@@ -74,25 +79,35 @@ const HomepageComponent = () => {
     //   }
     // }
 
-    const getTags = async (notes) => {
-      try {
-        let data
-        // data = await getAllTags();
-        console.log("getTags : ", data);
-        const tags = notes?.filter((note) => { return (note.tags && note.tags.length > 0) });
-        const uniqueTags = [...new Set(tags.flatMap(note => note.tags))];
-        setTags(uniqueTags)
 
-      } catch (err) {
-        setTags([])
-      } finally {
-        setLoading(false)
-      }
-    }
 
     getNotes()
-    getTags(notes)
-  }, [userData, notes])
+
+  }, [userData])
+
+  useEffect(() => {
+    const getTagsFromNotes = (notes) => {
+      const tagMap = new Map();
+
+      notes.forEach(note => {
+        if (Array.isArray(note.tags)) {
+          note.tags.forEach(tag => {
+            const tagName = typeof tag === 'object' ? tag.name : getTagNameById(tag);
+            const tagId = typeof tag === 'object' ? tag._id : tag;
+            if (tagName && tagId && !tagMap.has(tagId)) {
+              tagMap.set(tagId, { name: tagName, _id: tagId });
+            }
+          });
+        }
+      });
+
+      const uniqueTags = Array.from(tagMap.values());
+      setTags(uniqueTags);
+    };
+
+    getTagsFromNotes(notes);
+  }, [notes]);
+
 
   //Favorite toggle handlers
   const handleFavoriteToggle = async (noteId) => {
