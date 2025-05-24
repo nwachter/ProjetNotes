@@ -13,7 +13,7 @@ api.interceptors.request.use((config) => {
 
 const register = async (data) => {
     try {
-        const response = await api.post('/register', data);
+        const response = await api.post('auth/register', data);
         console.log("Registered ! Info : ", response.data);
 
         return response.data;
@@ -25,7 +25,7 @@ const register = async (data) => {
 
 const login = async (username, password) => {
     try {
-        const response = await api.post('/login', { username, password });
+        const response = await api.post('auth/login', { username, password });
         return response.data;
     } catch (error) {
         console.error('Failed to login:', error);
@@ -35,7 +35,7 @@ const login = async (username, password) => {
 
 const logout = async () => {
     try {
-        const response = await api.post('/logout');
+        const response = await api.post('auth/logout');
         return response.data;
     } catch (error) {
         console.error('Failed to logout:', error);
@@ -45,7 +45,7 @@ const logout = async () => {
 
 const getUserInfo = async () => {
     try {
-        const response = await api.get('/verify');
+        const response = await api.get('auth/verify');
         return response.data;
     } catch (error) {
         console.error('Failed to verify token and get user info:', error);
