@@ -73,7 +73,7 @@ const SigninModal = ({ login }) => {
 
     try {
       const data = await login(username, password)
-      console.log("Data signin : ", data)
+      //console.log("Data signin : ", data)
 
       if (data && data.token) {
         localStorage.setItem("isConnected", true)

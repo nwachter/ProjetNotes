@@ -124,7 +124,7 @@ async function importUsers(users, options = {}) {
             ...userData,
         }));
         const results = await UserModel.insertMany(processedUsers, options);
-        console.log("Inserted Users : ", results.length);
+        //console.log("Inserted Users : ", results.length);
 
         return results.length;
     } catch (error) {

@@ -98,7 +98,7 @@ const NoteComponent = () => {
       try {
         const data = await checkConnectionAndGetInfo()
         const user = data.user
-        console.log("USER : ", user)
+        //console.log("USER : ", user)
         setUserData(user)
       } catch (error) {
         console.error("Error fetching user data:", error)

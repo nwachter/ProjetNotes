@@ -14,7 +14,7 @@ api.interceptors.request.use((config) => {
 const register = async (data) => {
     try {
         const response = await api.post('auth/register', data);
-        console.log("Registered ! Info : ", response.data);
+        //console.log("Registered ! Info : ", response.data);
 
         return response.data;
     } catch (error) {
