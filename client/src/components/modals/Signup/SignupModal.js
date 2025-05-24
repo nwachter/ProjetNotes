@@ -2,6 +2,7 @@
 import glassDonut from "../../../assets/images/glass-donut.png"
 import { useState } from "react"
 
+
 const SignupComponent = ({ register }) => {
   const [inputs, setInputs] = useState({
     username: "",
@@ -100,8 +101,8 @@ const SignupComponent = ({ register }) => {
 
       if (data?.userData) {
         setTimeout(() => {
-          window.location.href = "/signin"
-        }, 2000)
+          window.location.href = "/"
+        }, 1500)
       }
     } catch (error) {
       console.error("Registration error:", error)

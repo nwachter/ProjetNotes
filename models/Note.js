@@ -13,22 +13,24 @@ const noteSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
-    tags: {
-        type: Array,
+    tags: [{
+        type: mongoose.Schema.Types.ObjectId,  // Array of Tag references
+        ref: "Tag",
         required: true,
         default: [],
-        ref: "Tag",
-    },
+    }],
     creator_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
     },
-},
-    {
-        timestamps: true
-    }
-);
+    favorite: {
+        type: Boolean,
+        default: false,
+    },
+}, {
+    timestamps: true
+});
 
 const NoteModel = mongoose.model("Note", noteSchema);
 

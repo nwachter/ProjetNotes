@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 // Get All Notes
 const getAllNotes = async (req, res) => {
     try {
-        const data = await NoteModel.find({});
+        const data = await NoteModel.find({}).populate('tags', '_id name').sort({ createdAt: -1 });
         res.json(data);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch notes" });
@@ -16,8 +16,8 @@ const getAllNotes = async (req, res) => {
 
 const getNotesByTag = async (req, res) => {
     try {
-        if(!req.params.tags) {
-            res.status(400).json({error: "No tag was given"});
+        if (!req.params.tags) {
+            res.status(400).json({ error: "No tag was given" });
         }
         const data = await NoteModel.find({ tags: req.params.tags });
         res.json(data);
@@ -29,7 +29,7 @@ const getNotesByTag = async (req, res) => {
 // Get Note by id
 const getNoteById = async (req, res) => {
     try {
-        const data = await NoteModel.findById(req.params.id);
+        const data = await NoteModel.findById(req.params.id).populate('tags', '_id name');
 
         if (!data) {
             return res.status(404).json({ error: `Note #${req.params.id} not found` });
@@ -44,11 +44,11 @@ const getNoteById = async (req, res) => {
 // Get Notes by Creator ID
 const getNotesByCreatorId = async (req, res) => {
     try {
-        const data = await NoteModel.find({ creator_id: req.params.id });
+        const data = await NoteModel.find({ creator_id: req.params.id }).populate('tags', '_id name').sort({ createdAt: -1 }) ?? [];
 
-        if (!data.length) {
-            return res.status(404).json({ message: `No notes found for creator #${req.params.id}` });
-        }
+        // if (!data.length) {
+        //     return res.status(404).json({ message: `No notes found for creator #${req.params.id}` });
+        // }
 
         res.json(data);
     } catch (error) {
@@ -61,13 +61,13 @@ const createNote = async (req, res) => {
     try {
 
         const token = req.cookies.token;
-    
-            const userData = jwt.verify(token, process.env.SECRET);
-            if(!userData){
-                return res.status(401).json({ error: "Could not verify user" });
-            }
-        
-        const newNote = new NoteModel({...req.body, creator_id: userData?.id});
+
+        const userData = jwt.verify(token, process.env.SECRET);
+        if (!userData) {
+            return res.status(401).json({ error: "Could not verify user" });
+        }
+
+        const newNote = new NoteModel({ ...req.body, creator_id: userData?.id });
         const data = await newNote.save();
         res.status(201).json(data);
     } catch (error) {
@@ -173,7 +173,7 @@ module.exports = {
     importNotes,
     importUsers,
     getAllNotes,
-     getNotesByTag,
+    getNotesByTag,
     getNotesByCreatorId,
     getNoteById,
     createNote,

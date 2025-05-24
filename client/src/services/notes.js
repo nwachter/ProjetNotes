@@ -142,42 +142,43 @@ export const createNote = async (data) => {
     // Get existing tags from db to check which ones need to be created
     const existingTagsResponse = await api.get("/tags");
     const existingTags = existingTagsResponse.data;
-    
+
     // Create a map of existing tag names to their ObjectIds
     const existingTagMap = new Map(
       existingTags.map(tag => [tag.name, tag._id])
     );
-    
+
     // Find which tags need to be created
     const tagsToCreate = data.tags.filter(tagName => !existingTagMap.has(tagName));
-    
+
     // Create new tags if needed
     const newTagIds = await Promise.all(
       tagsToCreate.map(async (tagName) => {
-        const newTag = { 
-          name: tagName 
+        const newTag = {
+          name: tagName
         };
         const response = await api.post("/tags", newTag);
         return response.data._id;
       })
     );
-    
+
     // Map all tag names to their ObjectIds (both existing and new)
     const allTagIds = data.tags.map(tagName => {
-      return existingTagMap.get(tagName) || 
+      return existingTagMap.get(tagName) ||
         newTagIds[tagsToCreate.indexOf(tagName)];
     });
-    
+
     // Create the note with ObjectId references
     const noteData = {
       ...data,
       _id: ObjectId(),
-      tags: allTagIds
+      tags: allTagIds,
+      favorite: data.favorite || false,
     };
-    
+
     const response = await api.post("/notes", noteData);
     return response.data;
-    
+
   } catch (error) {
     console.error("Failed to create note:", error);
     throw error;
@@ -220,7 +221,7 @@ export const addTagsToLSNotes = () => {
 
 // export const updateNoteInLS = async (id, data) => {
 //   const notes = JSON.parse(localStorage.getItem("notes")) || [];
-  
+
 //   try {
 //     const index = notes.findIndex((note) => note._id === id);
 //     if (index === -1) {
@@ -329,7 +330,7 @@ export const createNoteInLS = ({ title, content, tags = [], image = '' }) => {
       image,
       createdAt: new Date().toISOString()
     };
-    
+
     notes.push(newNote);
     localStorage.setItem('notes', JSON.stringify(notes));
     return newNote;
@@ -345,24 +346,24 @@ export const createNoteInLS = ({ title, content, tags = [], image = '' }) => {
  * @param {Object} updates - Fields to update
  * @returns {Object|null} Updated note or null if not found
  */
-export const  updateNoteInLS = (id, updates) => {
+export const updateNoteInLS = (id, updates) => {
   try {
     const notes = fetchAllNotesFromLS();
     const noteIndex = notes.findIndex(note => note._id === id);
-    
+
     if (noteIndex === -1) {
       return null;
     }
-    
+
     // Prevent updating _id and createdAt
     const { _id, createdAt, ...rest } = updates;
-    
+
     notes[noteIndex] = {
       ...notes[noteIndex],
       ...rest,
       updatedAt: new Date().toISOString()
     };
-    
+
     localStorage.setItem('notes', JSON.stringify(notes));
     return notes[noteIndex];
   } catch (error) {
@@ -376,16 +377,16 @@ export const  updateNoteInLS = (id, updates) => {
  * @param {string} id - Note ID
  * @returns {boolean} True if deleted, false if not found
  */
-export const  deleteNoteInLS = (id) => {
+export const deleteNoteInLS = (id) => {
   try {
     const notes = fetchAllNotesFromLS();
     const initialLength = notes.length;
     const filteredNotes = notes.filter(note => note._id !== id);
-    
+
     if (filteredNotes.length === initialLength) {
       return false;
     }
-    
+
     localStorage.setItem('notes', JSON.stringify(filteredNotes));
     return true;
   } catch (error) {
@@ -399,12 +400,12 @@ export const  deleteNoteInLS = (id) => {
  * @param {string} query - Search query
  * @returns {Array} Array of matching notes
  */
-export const  searchNotesInLS = (query) => {
+export const searchNotesInLS = (query) => {
   try {
     const notes = fetchAllNotesFromLS();
     const lowerQuery = query.toLowerCase();
-    
-    return notes.filter(note => 
+
+    return notes.filter(note =>
       note.title.toLowerCase().includes(lowerQuery) ||
       note.content.toLowerCase().includes(lowerQuery) ||
       note.tags.some(tag => tag.toLowerCase().includes(lowerQuery))
@@ -420,7 +421,7 @@ export const  searchNotesInLS = (query) => {
 /**
  * Clear all notes from localStorage
  */
-export const  clearAllNotesFromLS = () => {
+export const clearAllNotesFromLS = () => {
   try {
     localStorage.removeItem('notes');
   } catch (error) {
@@ -536,7 +537,7 @@ export const migrateLocalStorageNotes = async () => {
   try {
     // Get notes from localStorage
     const localNotes = JSON.parse(localStorage.getItem('notes') || '[]');
-    
+
     if (localNotes.length === 0) {
       return { success: true, message: 'No notes to migrate' };
     }
@@ -544,17 +545,17 @@ export const migrateLocalStorageNotes = async () => {
     // Get all existing tags from database
     const existingTagsResponse = await api.get('/tags');
     const existingDbTags = existingTagsResponse.data;
-    
+
     // Create a map of tag names to their ObjectIds
     const tagNameToId = new Map(
       existingDbTags.map(tag => [tag.name, tag._id])
     );
-    
+
     // Collect all unique tag names from local notes
     const uniqueLocalTagNames = new Set(
       localNotes.flatMap(note => note.tags)
     );
-    
+
     // Create new tags that don't exist in the database
     const newTagPromises = Array.from(uniqueLocalTagNames)
       .filter(tagName => !tagNameToId.has(tagName))
@@ -564,9 +565,9 @@ export const migrateLocalStorageNotes = async () => {
         tagNameToId.set(tagName, response.data._id);
         return response.data;
       });
-    
+
     await Promise.all(newTagPromises);
-    
+
     // Transform local notes to match database schema
     const transformedNotes = localNotes.map(note => ({
       _id: new ObjectId().toHexString(),
@@ -575,19 +576,19 @@ export const migrateLocalStorageNotes = async () => {
       image: note.image,
       tags: note.tags.map(tagName => tagNameToId.get(tagName))
     }));
-    
+
     // Post all notes to database
-    const notePromises = await Promise.all(transformedNotes.map(note => 
+    const notePromises = await Promise.all(transformedNotes.map(note =>
       api.post('/notes', note)
     ));
-    
+
     // await Promise.all(notePromises);
-    
+
     // Clear localStorage only after successful migration
     localStorage.removeItem('notes');
 
     return notePromises;
-    
+
   } catch (error) {
     console.error('Migration failed:', error);
     throw error;

@@ -4,11 +4,15 @@ import logo from "../../assets/images/Logo.png";
 import headerBg from "../../assets/backgrounds/header_bg.png";
 import newIcon from "../../assets/icons/new_icon.svg";
 import { checkConnectionAndGetInfo } from "../../utils/decryptJwt";
+import { useNavigate } from "react-router-dom"
+import { LogOut } from "lucide-react";
+
 
 
 const Header = ({ logout, toggleSignInModal, toggleSignUpModal }) => {
   const [userData, setUserData] = useState(null); // Initialize as null
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate()
 
 
   useEffect(() => {
@@ -33,6 +37,7 @@ const Header = ({ logout, toggleSignInModal, toggleSignUpModal }) => {
   const handleLogout = () => {
     localStorage.setItem('isConnected', false);
     logout();
+    navigate("/")
   };
 
 
@@ -52,19 +57,19 @@ const Header = ({ logout, toggleSignInModal, toggleSignUpModal }) => {
             <img src={logo || "/placeholder.svg"} alt="Glass Notes" className="w-[174px] h-[81px]" />
           </Link>
           <nav className="hidden md:flex space-x-6">
-            <Link to="/" className="text-isabelline hover:text-saffron transition-colors duration-200 font-roboto">
+            <Link to="/" className="text-isabelline hover:text-persian-green transition-colors duration-200 font-roboto">
               Notes
             </Link>
             <Link
               to="/new"
-              className="flex items-center space-x-2 text-isabelline hover:text-saffron transition-colors duration-200 font-roboto"
+              className="flex items-center space-x-2 group text-isabelline  font-roboto"
             >
               <img
                 src={newIcon || "/placeholder.svg"}
                 alt="New note icon"
-                className="w-6 h-6 filter brightness-0 invert"
+                className="w-6 h-6 filter brightness-0 group-hover:brightness-100 invert group-hover:invert-0 transition-all duration-200"
               />
-              <span>New Note</span>
+              <span className="text-isabelline group-hover:text-persian-green transition-all  duration-200 ">Nouvelle Note</span>
             </Link>
           </nav>
         </div>
@@ -91,7 +96,7 @@ const Header = ({ logout, toggleSignInModal, toggleSignUpModal }) => {
         </button>
 
         {/* Desktop Auth Buttons */}
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden pr-4 md:flex items-center space-x-4">
           {userData === false || !userData?.username ? (
             <>
               <button
@@ -112,9 +117,10 @@ const Header = ({ logout, toggleSignInModal, toggleSignUpModal }) => {
               <span className="text-isabelline/80 font-roboto">{userData?.username}</span>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 bg-carmine/20 hover:bg-carmine/30 text-isabelline rounded-full transition-colors duration-200 font-roboto"
+                className="px-2 py-1 bg-white/10 hover:bg-white/5 hover:shadow-md hover:shadow-isabelline/5 text-isabelline rounded-full transition-all duration-200 font-roboto"
               >
-                Déconnexion
+                <LogOut className="h-5 w-5 text-carmine/90 stroke-[1.5]" />
+
               </button>
             </div>
           )}
@@ -123,15 +129,17 @@ const Header = ({ logout, toggleSignInModal, toggleSignUpModal }) => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 mt-2 p-4 bg-obsidian/90 backdrop-blur-md rounded-lg z-20 shadow-lg">
-          <nav className="flex flex-col space-y-4 mb-4">
+        <div className="md:hidden absolute top-full left-0 right-0 mt-2 p-4 bg-gradient-to-br from-glass-100/10 via-glass-100/5 to-arsenic/10 border-stroke/5 border-[1px] backdrop-blur-md  
+rounded-lg shadow-xl border-stroke/10 border-[1px] backdrop-blur-md rounded-lg z-20 shadow-lg">
+          <nav className="flex flex-col items-center space-y-4 mb-4">
             <Link
               to="/"
-              className="text-isabelline hover:text-saffron transition-colors duration-200 font-roboto py-2"
+              className="text-isabelline hover:text-persian-green transition-colors duration-200 font-roboto py-2"
               onClick={() => setMenuOpen(false)}
             >
               Notes
             </Link>
+            {/* {window.innerWidth >= 768 && userData?.id && 
             <Link
               to="/new"
               className="flex items-center space-x-2 text-isabelline hover:text-saffron transition-colors duration-200 font-roboto py-2"
@@ -142,8 +150,8 @@ const Header = ({ logout, toggleSignInModal, toggleSignUpModal }) => {
                 alt="New note icon"
                 className="w-6 h-6 filter brightness-0 invert"
               />
-              <span>New Note</span>
-            </Link>
+              <span>Nouvelle Note</span>
+            </Link>} */}
           </nav>
 
           <div className="border-t border-stroke/10 pt-4">
@@ -169,13 +177,14 @@ const Header = ({ logout, toggleSignInModal, toggleSignUpModal }) => {
                 </button>
               </div>
             ) : (
-              <div className="flex flex-col space-y-3">
+              <div className="flex flex-col items-center space-y-3">
                 <span className="text-isabelline/80 font-roboto py-2">{userData?.username}</span>
                 <button
                   onClick={handleLogout}
-                  className="w-full py-2 bg-carmine/20 hover:bg-carmine/30 text-isabelline rounded-full transition-colors duration-200 font-roboto"
+                  className="px-2 py-1 bg-white/10  hover:bg-white/5 flex items-center justify-center gap-2 hover:shadow-md text-[13px] hover:shadow-isabelline/5 text-isabelline rounded-full transition-all duration-200 font-roboto"
                 >
-                  Déconnexion
+                  <LogOut className="h-5 w-5 text-carmine/90 stroke-[1.5]" /> <span>Déconnexion</span>
+
                 </button>
               </div>
             )}

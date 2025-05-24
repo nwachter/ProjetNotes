@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { checkConnectionAndGetInfo } from "../../utils/decryptJwt"
 import { updateNote, updateNoteInLS, getNoteById, getNoteByIdFromLS } from "../../services/notes"
 import { useParams, useNavigate } from "react-router-dom"
+import FavoriteToggle from "../../components/ui/FavoriteToggle"
 
 const UpdateNoteComponent = () => {
   const noteId = useParams().id
@@ -17,20 +18,28 @@ const UpdateNoteComponent = () => {
     title: "",
     content: "",
     tags: "",
+    favorite: false,
   })
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, value, type, checked } = e.target
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
+    }))
+  }
+
+  const handleFavoriteToggle = () => {
+    setFormData((prev) => ({
+      ...prev,
+      favorite: !prev.favorite,
     }))
   }
 
   const handleUpdateNote = async (e) => {
     e.preventDefault()
     if (!formData.title || !formData.content) {
-      setError("Please fill in both title and content")
+      setError("Le titre et le contenu de la note sont requis.")
       return
     }
 
@@ -42,7 +51,14 @@ const UpdateNoteComponent = () => {
       }
 
       if (!userData) {
-        updatedNote = await updateNoteInLS(noteId, noteData)
+        // updatedNote = await updateNoteInLS(noteId, noteData)
+        setError("Vous devez être connecté pour mettre à jour une note.")
+        // fetchedNote = await getNoteByIdFromLS(noteId)
+        // console.log("Fetched note from local storage:", fetchedNote)
+        setTimeout(() => {
+          navigate("/")
+        }, 1500)
+        return false;
       } else {
         updatedNote = await updateNote(noteId, {
           ...noteData,
@@ -51,9 +67,10 @@ const UpdateNoteComponent = () => {
       }
 
       setNote(updatedNote)
-      setError(updatedNote ? null : "Failed to update note. Please try again.")
+      setError(updatedNote ? null : "Erreur lors de la mise à jour de la note. Veuillez réessayer.")
 
       if (updatedNote) {
+        setSuccess("Note mise à jour avec succès !")
         // Show success message and redirect after a short delay
         setTimeout(() => {
           navigate(`/note/${noteId}`)
@@ -61,7 +78,7 @@ const UpdateNoteComponent = () => {
       }
     } catch (error) {
       console.error(error)
-      setError("Failed to update note. Please try again.")
+      setError("Erreur lors de la mise à jour de la note. Veuillez réessayer.")
     }
   }
 
@@ -89,17 +106,22 @@ const UpdateNoteComponent = () => {
       let fetchedNote = null
 
       if (!noteId) {
-        errorMessage = "Note ID is missing."
+        errorMessage = "Note non reconnue."
       } else {
         try {
           if (!userData) {
-            fetchedNote = await getNoteByIdFromLS(noteId)
-            console.log("Fetched note from local storage:", fetchedNote)
+            setError("Vous devez être connecté pour mettre à jour une note.")
+            // fetchedNote = await getNoteByIdFromLS(noteId)
+            // console.log("Fetched note from local storage:", fetchedNote)
+            setTimeout(() => {
+              navigate("/")
+            }, 1500)
+            return false;
           } else if (userData?.id) {
             fetchedNote = await getNoteById(noteId)
             console.log("Fetched note from db:", fetchedNote)
           } else {
-            errorMessage = "Unknown user data"
+            errorMessage = "Utilisateur non reconnu."
           }
 
           setNote(fetchedNote)
@@ -111,6 +133,7 @@ const UpdateNoteComponent = () => {
                 ? fetchedNote.tags.join(", ")
                 : fetchedNote.tags
               : "",
+            favorite: fetchedNote.favorite || false,
           })
         } catch (err) {
           console.error("Error fetching note:", err)
@@ -148,7 +171,7 @@ const UpdateNoteComponent = () => {
   return (
     <div className="min-h-screen py-12 px-4 bg-gradient-to-br from-obsidian to-arsenic">
       <div className="max-w-3xl mx-auto">
-        <div className="mb-8 flex justify-center gap-4 flex-wrap">
+        {/* <div className="mb-8 flex justify-center gap-4 flex-wrap">
           {["Personal", "Work", "Ideas", "Tasks"].map((value, index) => (
             <button
               key={index}
@@ -157,10 +180,19 @@ const UpdateNoteComponent = () => {
               {value}
             </button>
           ))}
-        </div>
+        </div> */}
 
-        <div className="bg-gradient-to-br from-glass-100/10 via-glass-100/5 to-arsenic/10 backdrop-blur-md  p-8 rounded-lg shadow-xl">
-          <h2 className="text-2xl font-reggae-one text-stroke/70 mb-6">Mettre à jour une note</h2>
+        <div className="bg-gradient-to-br from-glass-100/10 via-glass-100/5 to-arsenic/10 border-stroke/5 border-[1px] backdrop-blur-md  p-8 rounded-lg shadow-xl">
+          <div className="flex relative items-center justify-between mb-6">
+            <h2 className="text-2xl font-reggae-one text-stroke/70">Mettre à jour une note</h2>
+            {/* Favorite Toggle */}
+            <FavoriteToggle
+              isFavorite={formData.favorite}
+              onToggle={handleFavoriteToggle}
+              hoverBackground={true}
+
+            />
+          </div>
 
           {success && (
             <div className="mb-6 p-4 bg-persian-green/20 border border-persian-green/30 rounded-lg">
@@ -177,7 +209,7 @@ const UpdateNoteComponent = () => {
           <form onSubmit={handleUpdateNote} className="space-y-6">
             <div className="space-y-2">
               <label htmlFor="title" className="old:block hidden text-isabelline/90 font-roboto">
-                Title
+                Titre
               </label>
               <input
                 id="title"
@@ -185,28 +217,28 @@ const UpdateNoteComponent = () => {
                 type="text"
                 value={formData.title}
                 onChange={handleInputChange}
-                placeholder="Note Title"
+                placeholder="Titre de la note"
                 className="w-full px-4 py-3  bg-transparent text-2xl text-saffron placeholder-saffron/50 border-b border-stroke/20 focus:outline-none focus:border-saffron/50 transition duration-300 font-reggae-one"
               />
             </div>
 
             <div className="space-y-2">
               <label htmlFor="content" className="old:block hidden text-isabelline/90 font-roboto">
-                Content
+                Contenu
               </label>
               <textarea
                 id="content"
                 name="content"
                 value={formData.content}
                 onChange={handleInputChange}
-                placeholder="Write your note here..."
-                className="w-full h-64 px-4 py-3 bg-transparent text-isabelline border-b border-stroke/20 focus:border-white/50 transition-all duration-300 placeholder-isabelline/50 focus:outline-none font-lora resize-none resize-none"
+                placeholder="Ecrivez votre note ici..."
+                className="w-full h-64 px-4 py-3 bg-transparent focus:border-none  active:border-none active:outline-none text-isabelline border-b border-stroke/20 focus:border-white/50 transition-all duration-300 placeholder-isabelline/50 focus:outline-none font-lora"
               />
             </div>
 
             <div className="space-y-2">
               <label htmlFor="tags" className="old:block hidden text-isabelline/90 font-roboto">
-                Tags (comma separated)
+                Tags (séparés par des virgules)
               </label>
               <input
                 id="tags"
@@ -214,7 +246,7 @@ const UpdateNoteComponent = () => {
                 type="text"
                 value={formData.tags}
                 onChange={handleInputChange}
-                placeholder="work, important, idea..."
+                placeholder="travail, important, idée..."
                 className="w-full px-4 py-3 bg-transparent text-sm text-persian-green duration-300 placeholder-persian-green/50 border-b border-stroke/20 focus:outline-none focus:border-persian-green/50 transition duration-300  font-lora"
               />
             </div>
@@ -225,13 +257,13 @@ const UpdateNoteComponent = () => {
                 onClick={() => navigate("/")}
                 className="px-6 py-3 bg-arsenic/80 text-isabelline rounded-full shadow-md hover:bg-arsenic transition-colors duration-300 font-roboto"
               >
-                Cancel
+                Annuler
               </button>
               <button
                 type="submit"
                 className="px-6 py-3 bg-persian-green/80 text-isabelline rounded-full shadow-md hover:bg-persian-green transition-colors duration-300 font-roboto"
               >
-                Save Note
+                Editer
               </button>
             </div>
           </form>

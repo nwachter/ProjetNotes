@@ -6,6 +6,8 @@ import { getNoteById, deleteNote, getNoteByIdFromLS } from "../../services/notes
 import { Link, useParams, useNavigate } from "react-router-dom"
 import editIcon from "../../assets/icons/edit_icon.svg"
 import deleteIcon from "../../assets/icons/delete_icon.svg"
+import FavoriteToggle from "../../components/ui/FavoriteToggle"
+import { updateNote } from "../../services/notes"
 
 const NoteComponent = () => {
   const [loading, setLoading] = useState(true)
@@ -20,7 +22,7 @@ const NoteComponent = () => {
     try {
       if (!userData) {
         console.error("No user data available for deletion.")
-        setError("You must be logged in to delete a note.")
+        setError("Vous devez être connecté pour supprimer une note.")
         return
       }
 
@@ -28,7 +30,36 @@ const NoteComponent = () => {
       navigate("/")
     } catch (error) {
       console.error("Error deleting note:", error)
-      setError("Failed to delete the note. Please try again.")
+      setError("Echec lors de la suppression de la note. Veuillez essayer à nouveau.")
+    }
+  }
+
+  const handleFavoriteToggle = async () => {
+    try {
+      if (!noteId) return;
+
+      const updatedNote = {
+        ...note,
+        favorite: !note.favorite
+      };
+
+      // Update in backend or local storage
+      if (userData?.id) {
+
+        await updateNote(noteId, { favorite: updatedNote.favorite });
+      } else {
+        setError("Vous devez être connecté pour mettre à jour une note.");
+        return false;
+        // await updateNoteInLS(noteId, { favorite: updatedNote.favorite });
+      }
+
+      // Update local state
+
+      setNote(updatedNote);
+      setError(null)
+    } catch (err) {
+      console.error("Error updating favorite status:", err);
+      setError("Echec lors de la mise à jour du statut favori. Veuillez essayer à nouveau.");
     }
   }
 
@@ -37,7 +68,7 @@ const NoteComponent = () => {
       let errorMessage = null
       let fetchedNote = null
       if (!noteId) {
-        errorMessage = "Note ID is missing."
+        errorMessage = "Note non reconnue."
       } else {
         try {
           if (!userData) {
@@ -47,11 +78,11 @@ const NoteComponent = () => {
             fetchedNote = await getNoteById(noteId)
             console.log("Fetched note from db:", fetchedNote)
           } else {
-            errorMessage = "Unknown user data"
+            errorMessage = "Utilisateur inconnu. Veuillez actualiser la page."
           }
         } catch (err) {
           console.error("Error fetching note:", err)
-          errorMessage = "Failed to fetch the note. Please try again."
+          errorMessage = "Echec lors de la récupération de la note. Veuillez essayer à nouveau."
         }
       }
       setNote(fetchedNote)
@@ -84,7 +115,7 @@ const NoteComponent = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-obsidian to-arsenic">
         <div className="glass-background p-8 rounded-lg max-w-md">
-          <div className="text-center text-isabelline/90 text-xl font-lora">Loading...</div>
+          <div className="text-center text-isabelline/90 text-xl font-lora">Chargement...</div>
         </div>
       </div>
     )
@@ -101,7 +132,7 @@ const NoteComponent = () => {
   return (
     <div className="min-h-screen py-12 px-4 bg-gradient-to-br from-obsidian to-arsenic">
       <div className="max-w-3xl mx-auto">
-        <div className="mb-8 flex justify-center gap-4 flex-wrap">
+        {/* <div className="mb-8 flex justify-center gap-4 flex-wrap">
           {["Personal", "Work", "Ideas", "Tasks"].map((value, index) => (
             <button
               key={index}
@@ -110,12 +141,23 @@ const NoteComponent = () => {
               {value}
             </button>
           ))}
-        </div>
+        </div> */}
 
-        <div className="glass-background p-8 rounded-lg shadow-xl">
+        <div className="bg-gradient-to-br from-glass-100/10 via-glass-100/5 to-arsenic/10 border-stroke/5 border-[1px] backdrop-blur-md  p-8 rounded-lg shadow-xl">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-reggae-one text-saffron">{note.title}</h2>
-            <div className="flex items-center space-x-3">
+
+            <div className="flex  items-center space-x-3">
+              <div className="relative">
+                <FavoriteToggle
+                  isFavorite={note.favorite}
+                  onToggle={handleFavoriteToggle}
+                  hoverBackground={true}
+
+                />
+
+              </div>
+
               <Link
                 to={`/update/${note._id}`}
                 className="p-2 bg-arsenic/50 rounded-full hover:bg-arsenic/80 transition-colors duration-300"
@@ -138,7 +180,7 @@ const NoteComponent = () => {
               {Array.isArray(note.tags) ? (
                 note.tags.map((tag, index) => (
                   <span key={index} className="px-3 py-1 bg-saffron/20 text-saffron text-xs rounded-full font-roboto">
-                    {tag}
+                    {tag.name}
                   </span>
                 ))
               ) : (
@@ -155,13 +197,22 @@ const NoteComponent = () => {
 
           <div className="mt-8 pt-4 border-t border-stroke/10 flex justify-between items-center">
             <div className="text-xs text-isabelline/60 font-roboto">
-              {note.createdAt && <span>Created: {new Date(note.createdAt).toLocaleDateString()}</span>}
+              {note.createdAt && (
+                <span>
+                  Crée le : {new Date(note.createdAt).toLocaleDateString()} &agrave;{" "}
+                  {new Date(note.createdAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  })}
+                </span>
+              )}
             </div>
             <button
               onClick={() => navigate("/")}
               className="px-4 py-2 bg-arsenic/50 text-isabelline/80 rounded-full text-sm hover:bg-arsenic/80 transition-colors duration-300 font-roboto"
             >
-              Back to Notes
+              Retour aux notes
             </button>
           </div>
         </div>
@@ -171,9 +222,9 @@ const NoteComponent = () => {
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="glass-background p-8 rounded-lg max-w-md w-full">
-            <h3 className="text-xl font-reggae-one text-carmine mb-4">Delete Note</h3>
+            <h3 className="text-xl font-reggae-one text-carmine mb-4">Supprimer la note</h3>
             <p className="text-isabelline/90 font-lora mb-6">
-              Are you sure you want to delete this note? This action cannot be undone.
+              Etes-vous sûr de vouloir supprimer cette note ? Cette action est irréversible.
             </p>
             <div className="flex justify-end space-x-4">
               <button
