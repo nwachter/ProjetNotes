@@ -30,19 +30,18 @@ const allowedOrigins = [
     'http://127.0.0.1:3000',
     'https://glass-notes-ten.vercel.app/',
     'https://glass-notes-git-main-nwachters-projects.vercel.app/',
-    'https://glass-notes-rfyd6fm20-nwachters-projects.vercel.app/'
+    'https://glass-notes-16mkl2nxz-nwachters-projects.vercel.app/'
 ];
 
 app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
+
+// Gérer les requêtes OPTIONS (preflight)
+app.options('*', cors());
 
 //cookie parser
 app.use(cookieParser());
