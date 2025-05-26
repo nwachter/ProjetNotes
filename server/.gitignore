@@ -6,7 +6,7 @@
 
 # Files
 config.env
-/client/.env/
+.env
 
 # Ignore logs and coverage folder
 /logs
