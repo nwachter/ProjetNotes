@@ -32,4 +32,4 @@ COPY --from=build /usr/src/app/build ./build
 EXPOSE 3001
 
 # Start serve
-CMD ["serve", "-s", "build", "-l", "3000"]
+CMD ["serve", "-s", "build", "-l", "3001"]
