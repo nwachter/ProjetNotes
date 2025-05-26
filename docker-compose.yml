@@ -1,17 +1,12 @@
 version: '3.8'
 
-networks:
-  proxy:
-    name: caddy_network
-    external: true
-
 services:
   notes_server:
     build:
       context: ./server
       dockerfile: Dockerfile
     networks:
-      - notes_network
+      - notes-network
     expose:
       - 4000
     environment:
@@ -29,12 +24,17 @@ services:
       context: ./client
       dockerfile: Dockerfile
     networks:
-      - notes_network
+      - notes-network
     expose:
       - 3001
     environment:
-      - REACT_APP_API_URL=
+      - REACT_APP_API_URL=http://notes_server:4000
       - NODE_ENV=prod
     depends_on:
       - server
     restart: unless-stopped
+
+networks:
+  proxy:
+    name: notes-network
+    external: true
