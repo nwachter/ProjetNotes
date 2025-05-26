@@ -1,10 +1,10 @@
 "use client"
 import glassDonut from "../../../assets/images/glass-donut.png"
 import { useState } from "react"
-import { User, LockKeyhole, LockKeyholeOpen, Mail } from "lucide-react"
+import { User, LockKeyhole } from "lucide-react"
 
 const SigninModal = ({ login }) => {
-  const [inputs, setInputs] = useState([{ username: "" }, { password: "" }])
+
   const [errors, setErrors] = useState({ username: "", password: "" })
   const [alert, setAlert] = useState({ type: "", message: "" })
   const [isLoading, setIsLoading] = useState(false)
@@ -45,7 +45,7 @@ const SigninModal = ({ login }) => {
     const error = validateInput(value, min, max, regex, fieldName)
 
     setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: error }))
-    setInputs((prevInputs) => ({ ...prevInputs, [fieldName]: value }))
+    // setInputs((prevInputs) => ({ ...prevInputs, [fieldName]: value }))
   }
 
   const handleChangeUsername = (event) => {

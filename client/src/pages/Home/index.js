@@ -1,8 +1,7 @@
 "use client"
 
 import { useEffect, useState, useMemo } from "react"
-import { fetchAllNotesFromLS, getNotesByCreatorId, updateNote, updateNoteInLS } from "../../services/notes"
-import { getAllTags } from "../../services/tags"
+import { getNotesByCreatorId, updateNote } from "../../services/notes"
 import { checkConnectionAndGetInfo } from "../../utils/decryptJwt"
 import { Link } from "react-router-dom"
 import Draggable from "react-draggable"
@@ -18,10 +17,13 @@ const HomepageComponent = () => {
   const [positions, setPositions] = useState({})
   const [activeFilter, setActiveFilter] = useState("Toutes")
   const [searchTerm, setSearchTerm] = useState("")
-  const [formData, setFormData] = useState({ favorite: false })
+  // const [formData, setFormData] = useState({ favorite: false })
 
 
-
+  const getTagNameById = (id) => {
+    const tag = allTags.find((tag) => tag._id === id)
+    return tag?.name
+  }
 
 
   useEffect(() => {
@@ -142,10 +144,7 @@ const HomepageComponent = () => {
     }
   }
 
-  const getTagNameById = (id) => {
-    const tag = allTags.find((tag) => tag._id === id)
-    return tag?.name
-  }
+
 
   const allTags = useMemo(() => {
     return [{ name: "Toutes", _id: "Toutes" }, { name: "Favorites", _id: "Favorites" }, { name: "Récentes", _id: "Récentes" }

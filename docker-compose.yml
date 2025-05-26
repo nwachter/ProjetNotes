@@ -1,0 +1,40 @@
+version: '3.8'
+
+networks:
+  proxy:
+    name: caddy_network
+    external: true
+
+services:
+  notes_server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    networks:
+      - notes_network
+    expose:
+      - 4000
+    environment:
+      - NODE_ENV=prod
+      - PORT=4000
+      - SECRET=wachter18
+      - MONGODB_URI=mongodb+srv://nwachter:wachter18@clusterprojects.oeemd.mongodb.net/ProjetNotes?retryWrites=true&w=majority&appName=ClusterProjects
+    volumes:
+      - ./server:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+
+  notes_client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    networks:
+      - notes_network
+    expose:
+      - 3001
+    environment:
+      - REACT_APP_API_URL=
+      - NODE_ENV=prod
+    depends_on:
+      - server
+    restart: unless-stopped
