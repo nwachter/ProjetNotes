@@ -12,9 +12,9 @@ const { notesData } = require('./data/notes');
 // const hostname = '127.0.0.1'; 
 const URI = process.env.MONGODB_URI;
 const PORT = Number(process.env.PORT || 4000);
-const NODE_ENV = process.env.NODE_ENV || 'dev';
+const NODE_ENV = process.env.NODE_ENV || 'prod';
 
-const hostname = NODE_ENV === 'dev' ? 'localhost' : 'glass-notes-server.vercel.app';
+const hostname = NODE_ENV === 'dev' ? 'localhost' : 'notes_server';
 
 
 const app = express();
@@ -33,6 +33,7 @@ const allowedOrigins = [
     'http://127.0.0.1:3000',
     'http://notes_client:3001',
     'http://projetnotes-notes_client-1:3001',
+    "https://glass-notes.nwproject.fr/",
     'https://glass-notes-git-main-nwachters-projects.vercel.app',
     'https://glass-notes-16mkl2nxz-nwachters-projects.vercel.app'
 ];
