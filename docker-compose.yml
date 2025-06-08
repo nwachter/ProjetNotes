@@ -3,6 +3,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    container_name: notes_server
     networks:
       - notes-network
     expose:
@@ -21,6 +22,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+    container_name: notes_client
     networks:
       - notes-network
     expose:

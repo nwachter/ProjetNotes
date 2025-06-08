@@ -5,16 +5,16 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const { importUsers, importNotes } = require('./controllers/notesController');
+// const { importUsers, importNotes } = require('./controllers/notesController');
 const { usersData } = require('./data/users');
 const { notesData } = require('./data/notes');
 
 // const hostname = '127.0.0.1'; 
 const URI = process.env.MONGODB_URI;
 const PORT = Number(process.env.PORT || 4000);
-const NODE_ENV = process.env.NODE_ENV || 'prod';
+const NODE_ENV = process.env.NODE_ENV || 'production';
 
-const hostname = NODE_ENV === 'dev' ? 'localhost' : 'notes_server';
+const hostname = NODE_ENV === 'development' ? 'localhost' : 'notes_server';
 
 
 const app = express();
@@ -30,7 +30,9 @@ app.use(express.urlencoded({ extended: true }));
 // CORS pour production
 const allowedOrigins = [
     'http://localhost:3000',
+    'http://localhost:3001',
     'http://127.0.0.1:3000',
+    'http://127.0.0.1:3001',
     'http://notes_client:3001',
     'http://projetnotes-notes_client-1:3001',
     "https://glass-notes.nwproject.fr/",
@@ -96,7 +98,7 @@ app.get('*', (req, res) => {
 
 
 app.listen(PORT, hostname, () => {
-    console.log(`Le serveur est démarré sur http://${hostname}${NODE_ENV === 'prod' ? "" : ":" + PORT}`);
+    console.log(`Le serveur est démarré sur http://${hostname}${NODE_ENV === 'production' ? "" : ":" + PORT}`);
     // console.log(`Le serveur est démarré sur le port ${PORT}`);
 
 });

@@ -121,17 +121,22 @@ const loginUser = async (req, res) => {
             },
             process.env.SECRET,
             {
-                expiresIn: '2h',
+                expiresIn: '6h',
             }
         );
+        const cookieOptions = {
+            httpOnly: true, //Prevent access from client-side scripts
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax", //To Prevent CSRF attacks : strict
+            maxAge: 5 * 24 * 60 * 60, // Expiration in milliseconds
+            path: "/",
+            // ...(process.env.NODE_ENV === "production" && {
+            //   domain: "glass-notes.nwproject.fr",
+            // }),
+        };
 
         //SET TOKEN IN HTTP-ONLY COOKIE
-        res.cookie("token", token, {
-            maxAge: 3600000, // Expiration in milliseconds
-            httpOnly: true, //Prevent access from client-side scripts
-            secure: process.env.NODE_ENV === 'prod', //Use HTTPS in production
-            sameSite: "strict" //Prevent CSRF attacks
-        });
+        res.cookie("token", token, cookieOptions);
 
         res.status(200).json({
             message: 'Login successful',
