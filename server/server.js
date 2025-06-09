@@ -14,7 +14,7 @@ const URI = process.env.MONGODB_URI;
 const PORT = Number(process.env.PORT || 4000);
 const NODE_ENV = process.env.NODE_ENV || 'production';
 
-const hostname = NODE_ENV === 'development' ? 'localhost' : 'notes_server';
+const hostname = NODE_ENV === 'development' ? 'localhost' : 'glass-notes.nwproject.fr';
 
 
 const app = express();
@@ -40,21 +40,32 @@ const allowedOrigins = [
     'https://glass-notes-16mkl2nxz-nwachters-projects.vercel.app'
 ];
 
-app.use((req, res, next) => {
-    const origin = req.headers.origin;
-    if (allowedOrigins.includes(origin)) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
-        res.setHeader('Access-Control-Allow-Credentials', 'true');
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-        res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    }
+// app.use((req, res, next) => {
+//     const origin = req.headers.origin;
+//     if (allowedOrigins.includes(origin)) {
+//         res.setHeader('Access-Control-Allow-Origin', origin);
+//         res.setHeader('Access-Control-Allow-Credentials', 'true');
+//         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+//         res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+//     }
 
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);
-    }
+//     if (req.method === 'OPTIONS') {
+//         return res.sendStatus(200);
+//     }
 
-    next();
-});
+//     next();
+// });
+
+app.use(cors({
+    origin: [
+        'http://localhost:3001',
+        'http://localhost:3000',
+        'https://glass-notes.nwproject.fr',
+        'https://glass-notes.nwproject.fr/',
+        'http://notes_client:3001'  // For internal container communication
+    ],
+    credentials: true
+}));
 
 // Gérer les requêtes OPTIONS (preflight)
 // app.options('*', cors());
@@ -86,7 +97,7 @@ app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('/client/sw.js', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../client/build', 'sw.js'));
-}); //testerror
+});
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
@@ -98,7 +109,7 @@ app.get('*', (req, res) => {
 
 
 app.listen(PORT, hostname, () => {
-    console.log(`Le serveur est démarré sur http://${hostname}${NODE_ENV === 'production' ? "" : ":" + PORT}`);
+    console.log(`Le serveur est démarré sur ${NODE_ENV === "production" ? "https://" : "http://"}://${hostname}${NODE_ENV === 'production' ? "" : ":" + PORT}`);
     // console.log(`Le serveur est démarré sur le port ${PORT}`);
 
 });
