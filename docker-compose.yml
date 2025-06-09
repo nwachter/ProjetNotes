@@ -24,9 +24,6 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    args:
-      - REACT_APP_API_URL=/api/v1
-      - NODE_ENV=production      
     container_name: notes_client
     networks:
       - notes-network
