@@ -60,6 +60,8 @@ app.use(cors({
     origin: [
         'http://localhost:3001',
         'http://localhost:3000',
+        'http://localhost:4000',
+        'https://localhost:4000',
         'https://glass-notes.nwproject.fr',
         'https://glass-notes.nwproject.fr/',
         'http://notes_client:3001'  // For internal container communication
@@ -91,17 +93,17 @@ app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/notes', notesRouter);
 app.use('/api/v1/tags', tagsRouter);
 
-// Serve React static files
-app.use(express.static(path.join(__dirname, '../client/build')));
+// Serve React static files //testerror removed this for deployment, file serving handled by cadddy
+// app.use(express.static(path.join(__dirname, '../client/build')));
 
 
-app.get('/client/sw.js', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client/build', 'sw.js'));
-});
+// app.get('/client/sw.js', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, '../client/build', 'sw.js'));
+// });
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-});
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+// });
 
 
 
@@ -109,7 +111,7 @@ app.get('*', (req, res) => {
 
 
 app.listen(PORT, hostname, () => {
-    console.log(`Le serveur est démarré sur ${NODE_ENV === "production" ? "https://" : "http://"}://${hostname}${NODE_ENV === 'production' ? "" : ":" + PORT}`);
+    console.log(`Le serveur est démarré sur ${NODE_ENV === "production" ? "https://" : "http://"}${hostname}:${PORT}`);
     // console.log(`Le serveur est démarré sur le port ${PORT}`);
 
 });

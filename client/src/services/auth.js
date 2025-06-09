@@ -8,7 +8,7 @@ import { api } from "../config/config"
 //     return config;
 // }, (error) => {
 //     return Promise.reject(error);
-// });
+// }); //testerror, commented here, and added in config
 
 
 const register = async (data) => {
