@@ -8,7 +8,7 @@ import editIcon from "../../assets/icons/edit_icon.svg"
 import deleteIcon from "../../assets/icons/delete_icon.svg"
 import FavoriteToggle from "../../components/ui/FavoriteToggle"
 import { updateNote } from "../../services/notes"
-import ConfirmationModal from "../../components/modals/General/ConfirmationModal"
+import ConfirmationModal from "../../components/modals/general/ConfirmationModal"
 
 const NoteComponent = () => {
   const [loading, setLoading] = useState(true)

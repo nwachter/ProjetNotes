@@ -8,7 +8,11 @@ import Draggable from "react-draggable"
 import FavoriteToggle from "../../components/ui/FavoriteToggle"
 import { Move } from "lucide-react"
 import { deleteNote } from "../../services/notes"
+import editIcon from "../../assets/icons/edit_icon.svg"
+
 import deleteIcon from "../../assets/icons/delete_icon.svg"
+import ConfirmationModal from "../../components/modals/general/ConfirmationModal"
+
 
 const HomepageComponent = () => {
   const [notes, setNotes] = useState([])
@@ -20,6 +24,7 @@ const HomepageComponent = () => {
   const [activeFilter, setActiveFilter] = useState("Toutes")
   const [searchTerm, setSearchTerm] = useState("")
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [selectedNote, setSelectedNote] = useState(null)
   // const [formData, setFormData] = useState({ favorite: false })
 
 
@@ -132,17 +137,17 @@ const HomepageComponent = () => {
   }
 
   const handleDeleteNote = async () => {
-    if (!noteToDelete) return
+    if (!selectedNote) return
     try {
       if (!userData) {
         setError("Vous devez être connecté pour supprimer une note.")
         return
       }
 
-      await deleteNote(noteToDelete)
-      setNotes(prev => prev?.filter(note => note._id !== noteToDelete)) // mise à jour locale
+      await deleteNote(selectedNote)
+      setNotes(prev => prev?.filter(note => note._id !== selectedNote)) // mise à jour locale
       setShowDeleteConfirm(false)
-      setNoteToDelete(null)
+      setSelectedNote(null)
     } catch (error) {
       console.error("Erreur lors de la suppression :", error)
       setError("Échec lors de la suppression de la note.")
@@ -309,20 +314,20 @@ const HomepageComponent = () => {
                       <div className="absolute top-4 right-4 flex items-center gap-4 z-10">
                         <Link
                           to={`/update/${note._id}`}
-                          className="p-2 bg-arsenic/50 rounded-full hover:bg-arsenic/80 transition-colors duration-300"
-                          title="Edit Note"
+                          className=""
+                          title="Modifier Note"
                         >
-                          <img src={editIcon || "/placeholder.svg"} alt="Edit" className="w-5 h-5" />
+                          <img src={editIcon || "/placeholder.svg"} alt="Edit" className="w-5 h-5 hover:filter hover:brightness-75 active:filter active:brightness-125 transition-all" />
                         </Link>
                         <button
                           onClick={() => {
-                            setNoteToDelete(note._id)
+                            setSelectedNote(note._id)
                             setShowDeleteConfirm(true)
                           }}
-                          className="p-2 bg-arsenic/50 rounded-full hover:bg-carmine/30 transition-colors duration-300"
-                          title="Delete Note"
+                          className=""
+                          title="Supprimer Note"
                         >
-                          <img src={deleteIcon || "/placeholder.svg"} alt="Delete" className="w-5 h-5" />
+                          <img src={deleteIcon || "/placeholder.svg"} alt="Delete" className="w-5 h-5 hover:filter hover:brightness-125 active:filter active:brightness-90 transition-all" />
                         </button>
 
                         <FavoriteToggle
@@ -443,7 +448,7 @@ const HomepageComponent = () => {
           isOpen={showDeleteConfirm}
           onClose={() => {
             setShowDeleteConfirm(false)
-            setNoteToDelete(null)
+            setSelectedNote(null)
           }}
           onConfirm={handleDeleteNote}
           message="Êtes-vous sûr de vouloir supprimer cette note ?"
