@@ -9,7 +9,7 @@ services:
     expose:
       - 4000
     environment:
-      - NODE_ENV=prod
+      - NODE_ENV=production
       - PORT=4000
       - SECRET=wachter18
       - MONGODB_URI=mongodb+srv://nwachter:wachter18@clusterprojects.oeemd.mongodb.net/ProjetNotes?retryWrites=true&w=majority&appName=ClusterProjects
@@ -29,7 +29,7 @@ services:
       - 3001
     environment:
       - REACT_APP_API_URL=http://notes_server:4000
-      - NODE_ENV=prod
+      - NODE_ENV=production
     depends_on:
       - notes_server
     restart: unless-stopped
