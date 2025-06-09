@@ -13,6 +13,12 @@ RUN npm install
 # Copy source code
 COPY . .
 
+# Set build-time environment variables
+ARG REACT_APP_API_URL=/api/v1
+ARG NODE_ENV=production
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+ENV NODE_ENV=$NODE_ENV
+
 # Build the app
 RUN npm run build
 
