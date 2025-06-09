@@ -8,6 +8,7 @@ import editIcon from "../../assets/icons/edit_icon.svg"
 import deleteIcon from "../../assets/icons/delete_icon.svg"
 import FavoriteToggle from "../../components/ui/FavoriteToggle"
 import { updateNote } from "../../services/notes"
+import ConfirmationModal from "../../components/modals/General/ConfirmationModal"
 
 const NoteComponent = () => {
   const [loading, setLoading] = useState(true)
@@ -92,6 +93,34 @@ const NoteComponent = () => {
 
     fetchNoteById()
   }, [noteId, userData])
+
+  // const fetchNoteById2 = async () => {
+  //   let errorMessage = null
+  //   let fetchedNote = null
+  //   if (!noteId) {
+  //     errorMessage = "Note non reconnue."
+  //   } else {
+  //     try {
+  //       if (!userData) {
+  //         fetchedNote = await getNoteByIdFromLS(noteId)
+  //         console.log("Fetched note from local storage:", fetchedNote)
+  //       } else if (userData?.id) {
+  //         fetchedNote = await getNoteById(noteId)
+  //         console.log("Fetched note from db:", fetchedNote)
+  //       } else {
+  //         errorMessage = "Utilisateur inconnu. Veuillez actualiser la page."
+  //       }
+  //     } catch (err) {
+  //       console.error("Error fetching note:", err)
+  //       errorMessage = "Echec lors de la récupération de la note. Veuillez essayer à nouveau."
+  //     }
+  //   }
+  //   setNote(fetchedNote)
+  //   setError(errorMessage)
+  //   setLoading(false)
+  //   return fetchedNote;
+  // }
+  // const note2 = use(fetchNoteById())
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -219,8 +248,8 @@ const NoteComponent = () => {
       </div>
 
       {/* Delete Confirmation Modal */}
-      {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+      {/* {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-gradient-to-br from-glass-100/10 via-glass-100/5 to-arsenic/10 border-stroke/5 border-[1px] backdrop-blur-md rounded-xl p-4 flex items-center justify-center z-50">
           <div className="glass-background p-8 rounded-lg max-w-md w-full">
             <h3 className="text-xl font-reggae-one text-carmine mb-4">Supprimer la note</h3>
             <p className="text-isabelline/90 font-lora mb-6">
@@ -231,18 +260,20 @@ const NoteComponent = () => {
                 onClick={() => setShowDeleteConfirm(false)}
                 className="px-4 py-2 bg-arsenic/80 text-isabelline rounded-full hover:bg-arsenic transition-colors duration-300 font-roboto"
               >
-                Cancel
+                Annuler
               </button>
               <button
                 onClick={handleDeleteNote}
                 className="px-4 py-2 bg-carmine/80 text-isabelline rounded-full hover:bg-carmine transition-colors duration-300 font-roboto"
               >
-                Delete
+                Supprimer
               </button>
             </div>
           </div>
         </div>
-      )}
+      )} */}
+
+      {showDeleteConfirm && <ConfirmationModal isOpen={showDeleteConfirm} onClose={() => setShowDeleteConfirm(false)} handleDeleteNote={handleDeleteNote} />}
     </div>
   )
 }
