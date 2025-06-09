@@ -1,19 +1,19 @@
 import { api } from "../config/config"
 
-api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-}, (error) => {
-    return Promise.reject(error);
-});
+// api.interceptors.request.use((config) => {
+//     const token = localStorage.getItem('token');
+//     if (token) {
+//         config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+// }, (error) => {
+//     return Promise.reject(error);
+// });
 
 
 const register = async (data) => {
     try {
-        const response = await api.post('auth/register', data);
+        const response = await api.post('/auth/register', data);
         //console.log("Registered ! Info : ", response.data);
 
         return response.data;
@@ -25,7 +25,7 @@ const register = async (data) => {
 
 const login = async (username, password) => {
     try {
-        const response = await api.post('auth/login', { username, password });
+        const response = await api.post('/auth/login', { username, password });
         return response.data;
     } catch (error) {
         console.error('Failed to login:', error);
@@ -35,7 +35,7 @@ const login = async (username, password) => {
 
 const logout = async () => {
     try {
-        const response = await api.post('auth/logout');
+        const response = await api.post('/auth/logout');
         return response.data;
     } catch (error) {
         console.error('Failed to logout:', error);
