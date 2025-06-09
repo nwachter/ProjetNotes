@@ -25,7 +25,6 @@
     "eject": "react-scripts eject",
     "build:css": "tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch"
   },
-  "proxy": "https://glass-notes.nwproject.fr",
   "eslintConfig": {
     "extends": [
       "react-app",

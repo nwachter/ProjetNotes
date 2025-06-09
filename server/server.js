@@ -14,7 +14,7 @@ const URI = process.env.MONGODB_URI;
 const PORT = Number(process.env.PORT || 4000);
 const NODE_ENV = process.env.NODE_ENV || 'production';
 
-const hostname = NODE_ENV === 'development' ? 'localhost' : 'glass-notes.nwproject.fr';
+const hostname = NODE_ENV === 'development' ? 'localhost' : '0.0.0.0';
 
 
 const app = express();

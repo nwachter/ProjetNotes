@@ -45,7 +45,7 @@ const logout = async () => {
 
 const getUserInfo = async () => {
     try {
-        const response = await api.get('auth/verify');
+        const response = await api.get('/auth/verify');
         return response.data;
     } catch (error) {
         console.error('Failed to verify token and get user info:', error);
