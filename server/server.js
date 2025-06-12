@@ -21,40 +21,6 @@ const app = express();
 app.use(express.json()); // Parse JSON requests
 app.use(express.urlencoded({ extended: true }));
 
-//Cors
-// app.use(cors());
-// app.use(cors({
-//     origin: 'http://127.0.0.1:3000', 
-//     credentials: true
-// }));
-// CORS pour production
-const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'http://127.0.0.1:3000',
-    'http://127.0.0.1:3001',
-    'http://notes_client:3001',
-    'http://projetnotes-notes_client-1:3001',
-    "https://glass-notes.nwproject.fr/",
-    'https://glass-notes-git-main-nwachters-projects.vercel.app',
-    'https://glass-notes-16mkl2nxz-nwachters-projects.vercel.app'
-];
-
-// app.use((req, res, next) => {
-//     const origin = req.headers.origin;
-//     if (allowedOrigins.includes(origin)) {
-//         res.setHeader('Access-Control-Allow-Origin', origin);
-//         res.setHeader('Access-Control-Allow-Credentials', 'true');
-//         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-//         res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-//     }
-
-//     if (req.method === 'OPTIONS') {
-//         return res.sendStatus(200);
-//     }
-
-//     next();
-// });
 
 app.use(cors({
     origin: [
@@ -64,7 +30,7 @@ app.use(cors({
         'https://localhost:4000',
         'https://glass-notes.nwproject.fr',
         'https://glass-notes.nwproject.fr/',
-        'http://notes_client:3001'  // For internal container communication
+        'http://notes_client:3001'  // For the VPS
     ],
     credentials: true
 }));
@@ -94,16 +60,16 @@ app.use('/api/v1/notes', notesRouter);
 app.use('/api/v1/tags', tagsRouter);
 
 // Serve React static files //testerror removed this for deployment, file serving handled by cadddy
-// app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 
-// app.get('/client/sw.js', (req, res) => {
-//     res.sendFile(path.resolve(__dirname, '../client/build', 'sw.js'));
-// });
+app.get('/client/sw.js', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/build', 'sw.js'));
+});
 
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-// });
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+});
 
 
 
