@@ -6,12 +6,20 @@ import newIcon from "../../assets/icons/new_icon.svg";
 import { checkConnectionAndGetInfo } from "../../utils/decryptJwt";
 import { useNavigate } from "react-router-dom"
 import { LogOut } from "lucide-react";
+import Editor from 'react-simple-wysiwyg'; //testerror
+
 
 
 
 const Header = ({ logout, toggleSignInModal, toggleSignUpModal }) => {
   const [userData, setUserData] = useState(null); // Initialize as null
   const [menuOpen, setMenuOpen] = useState(false);
+  const [html, setHtml] = useState('my <b>HTML</b>'); //testerror
+
+  function onChange(e) {
+    setHtml(e.target.value);
+  }
+
   const navigate = useNavigate()
 
 
@@ -43,7 +51,7 @@ const Header = ({ logout, toggleSignInModal, toggleSignUpModal }) => {
 
   return (
     <header
-      className="relative px-6 py-4 rounded-3xl bg-cover bg-no-repeat shadow-md"
+      className="relative z-40 px-6 py-4 rounded-3xl bg-cover bg-no-repeat shadow-md"
       style={{
         backgroundImage: `url(${headerBg})`,
         backgroundSize: "cover",
@@ -197,6 +205,13 @@ rounded-lg shadow-xl border-stroke/10 border-[1px] backdrop-blur-md rounded-lg z
           "The discipline of writing something down is the first step toward making it happen." – Lee Iacocca
         </blockquote>
       </div>
+      <div className="relative w-full ">
+        <div className="absolute inset-0 left-0 z-50">
+          <Editor value={html} onChange={onChange} />
+
+        </div>
+      </div>
+
     </header>
   )
 };
