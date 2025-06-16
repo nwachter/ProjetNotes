@@ -6,7 +6,7 @@ import newIcon from "../../assets/icons/new_icon.svg";
 import { checkConnectionAndGetInfo } from "../../utils/decryptJwt";
 import { useNavigate } from "react-router-dom"
 import { LogOut } from "lucide-react";
-import Editor from 'react-simple-wysiwyg'; //testerror
+// import Editor from 'react-simple-wysiwyg'; //testerror
 
 
 
@@ -205,12 +205,12 @@ rounded-lg shadow-xl border-stroke/10 border-[1px] backdrop-blur-md rounded-lg z
           "The discipline of writing something down is the first step toward making it happen." – Lee Iacocca
         </blockquote>
       </div>
-      <div className="relative w-full ">
+      {/* <div className="relative w-full ">
         <div className="absolute inset-0 left-0 z-50">
           <Editor value={html} onChange={onChange} />
 
         </div>
-      </div>
+      </div> */}
 
     </header>
   )

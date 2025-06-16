@@ -5,9 +5,6 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-// const { importUsers, importNotes } = require('./controllers/notesController');
-const { usersData } = require('./data/users');
-const { notesData } = require('./data/notes');
 
 // const hostname = '127.0.0.1'; 
 const URI = process.env.MONGODB_URI;
@@ -15,7 +12,6 @@ const PORT = Number(process.env.PORT || 4000);
 const NODE_ENV = process.env.NODE_ENV || 'production';
 
 const hostname = NODE_ENV === 'development' ? 'localhost' : '0.0.0.0';
-
 
 const app = express();
 app.use(express.json()); // Parse JSON requests
@@ -30,7 +26,7 @@ app.use(cors({
         'https://localhost:4000',
         'https://glass-notes.nwproject.fr',
         'https://glass-notes.nwproject.fr/',
-        'http://notes_client:3001'  // For the VPS
+        'http://notes_client:3001'  // For the VPS with Docker
     ],
     credentials: true
 }));
@@ -59,9 +55,8 @@ app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/notes', notesRouter);
 app.use('/api/v1/tags', tagsRouter);
 
-// Serve React static files //testerror removed this for deployment, file serving handled by cadddy
+// Serve React static files for build (removed this for deployment, file serving handled by caddy)
 app.use(express.static(path.join(__dirname, '../client/build')));
-
 
 app.get('/client/sw.js', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../client/build', 'sw.js'));
