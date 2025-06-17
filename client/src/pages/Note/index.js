@@ -71,10 +71,11 @@ const NoteComponent = () => {
         errorMessage = "Note non reconnue."
       } else {
         try {
-          if (!userData) {
-            fetchedNote = await getNoteByIdFromLS(noteId)
-            console.log("Fetched note from local storage:", fetchedNote)
-          } else if (userData?.id) {
+          // if (!userData) {
+          //   fetchedNote = await getNoteByIdFromLS(noteId)
+          //   console.log("Fetched note from local storage:", fetchedNote)
+          // } else 
+          if (userData?.id) {
             fetchedNote = await getNoteById(noteId)
             console.log("Fetched note from db:", fetchedNote)
           } else {
@@ -132,16 +133,6 @@ const NoteComponent = () => {
   return (
     <div className="min-h-screen py-12 px-4 bg-gradient-to-br from-obsidian to-arsenic">
       <div className="max-w-3xl mx-auto">
-        {/* <div className="mb-8 flex justify-center gap-4 flex-wrap">
-          {["Personal", "Work", "Ideas", "Tasks"].map((value, index) => (
-            <button
-              key={index}
-              className="px-6 py-2 bg-persian-green/80 text-isabelline rounded-full shadow-lg hover:bg-persian-green transition-colors duration-300 font-roboto text-sm tracking-wide"
-            >
-              {value}
-            </button>
-          ))}
-        </div> */}
 
         <div className="bg-gradient-to-br from-glass-100/10 via-glass-100/5 to-arsenic/10 border-stroke/5 border-[1px] backdrop-blur-md  p-8 rounded-lg shadow-xl">
           <div className="flex justify-between items-center mb-6">
